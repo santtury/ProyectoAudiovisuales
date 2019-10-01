@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for, flash,session
 from flask_mysqldb import MySQL,MySQLdb
 from flask import Flask
-
+import time
 
 
 app = Flask(__name__)
@@ -15,12 +15,21 @@ mysql = MySQL(app)
 
 app.secret_key = 'mysecretkey'
 
+
 @app.route('/')
 def index():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM profesores')
     data = cur.fetchall()
     return render_template('registrar.html', profesores = data)
+
+
+@app.route("/getTime", methods=['GET'])
+def getTime():
+    data=time.strftime('%Y')
+    print("AÑO:  ", data)
+    print("server time : ", time.strftime('%A %B, %d %Y %H:%M:%S'));
+    return render_template('registrar.html')
 
 @app.route('/login',methods=["GET","POST"])
 def login():
