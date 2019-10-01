@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+{%if messages %}
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="alert-heading">Well done!</h4>
+        <p>{{message}}</p>
+</div>
+
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+</br>
+<form action="">
+<input type="text" name="nombre" placeholder="nombre">
+<input type="text" name="apellido" placeholder="apellido">
+<input type="text" name="cedula" placeholder="cedula">
+<input type="text" name="email" placeholder="email">
+<input type="text" name="programa" placeholder="programa">
+<input type="text" name="contrasenia" placeholder="contrasenia">
+<button type="submit">
+        Save
+    </button>
+
+</form>
+
+<table class="table table-striped">
+        <thead>
+                <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Apellido</th>
+                        <th scope="col">Cedula</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Programa</th>
+                        <th scope="col">Contraseña</th>
+                </tr>
+        </thead>
+        <tbody>
+
+                {% for profesor in profesores  %}
+                <tr>
+                        <th scope="row">{{profesor.0}}</th>
+                        <td>{{profesor.1}}</td>
+                        <td>{{profesor.3}}</td>
+                        <td>{{profesor.4}}</td>
+                        <td>{{profesor.5}}</td>
+
+                        <td>
+                                <a href="/edit/{{profesor.2}}">Editar</a>
+                                <a href="/">Eliminar</a>
+                        </td>
+                </tr>
+                {% endfor %}
+        </tbody>
+</table>
+{% endblock %}
