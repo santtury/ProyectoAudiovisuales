@@ -15,6 +15,8 @@ mysql = MySQL(app)
 
 app.secret_key = 'mysecretkey'
 
+    #  if para comparar la fecha      if   fecha>=(data+3):
+
 
 @app.route('/')
 def index():
@@ -66,7 +68,7 @@ def add_profesor():
         email = request.form['Email']
         programa = request.form['Programa']
         contraseña = request.form['Contraseña']
-
+        data=time.strftime('%d')
         cur = mysql.connection.cursor()
         cur.execute('INSERT INTO profesores (Nombre,Apellido,Cedula,Email,Programa,Contraseña) VALUES (%s, %s, %s,%s, %s, %s)',
          (nombre,apellido,cedula,email,programa,contraseña))
