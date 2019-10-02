@@ -30,7 +30,7 @@ def index():
 def getTime():
     data=time.strftime('%Y')
     print("AÑO:  ", data)
-    print("server time : ", time.strftime('%A %B, %d %Y %H:%M:%S'));
+    print("server time : ", time.strftime('%A %B, %d %Y %H:%M:%S'))
     return render_template('registrar.html')
 
 @app.route('/login',methods=["GET","POST"])
@@ -68,7 +68,7 @@ def add_profesor():
         email = request.form['Email']
         programa = request.form['Programa']
         contraseña = request.form['Contraseña']
-        data=time.strftime('%d')
+        
         cur = mysql.connection.cursor()
         cur.execute('INSERT INTO profesores (Nombre,Apellido,Cedula,Email,Programa,Contraseña) VALUES (%s, %s, %s,%s, %s, %s)',
          (nombre,apellido,cedula,email,programa,contraseña))
