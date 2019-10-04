@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash,sess
 from flask_mysqldb import MySQL,MySQLdb
 from flask import Flask
 import time
+import os
 
 
 app = Flask(__name__)
@@ -37,18 +38,20 @@ def getTime():
 def login():
     if request.method == 'POST':
         email = request.form['email']
-        password = request.form['password'].encode('utf-8')
+        password = request.form['password']
 
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM profesores WHERE email=%s",(email,))
         user = curl.fetchone()
-        curl.close()
+        print(str(password))
 
+        curl.close()
         if len(user) > 0:
-            if (password, user["password"].encode('utf-8')) == user["password"].encode('utf-8'):
-                session['name'] = user['name']
-                session['email'] = user['email']
-                return render_template("index.html")
+            if str(user["contraseña"])==str(password):
+
+               # session['name'] = user['name']
+               # session['email'] = user['email']
+                return render_template("buscarprofesor.html")
             else:
                 return "Error password and email not match"
         else:
@@ -121,6 +124,7 @@ def delete_profesor(cedula):
 def Busqueda():
    
     return render_template('buscarprofesor.html')
+
 
 
 @app.route('/Buscar', methods = ['POST'])
