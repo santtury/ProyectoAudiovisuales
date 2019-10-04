@@ -58,7 +58,7 @@ def login():
 
                # session['names'] = user['name']
                # session['email'] = user['email']
-                return render_template("buscarprofesor.html")
+                return render_template("layoutProfesor.html")
             else:
                 return "Error password and email not match"
         else:
