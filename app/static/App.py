@@ -24,6 +24,13 @@ def index():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM profesores')
     data = cur.fetchall()
+    return render_template('login.html', profesores = data)
+
+@app.route('/inicio')
+def inicio():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM profesores')
+    data = cur.fetchall()
     return render_template('registrar.html', profesores = data)
 
 
@@ -49,7 +56,7 @@ def login():
         if len(user) > 0:
             if str(user["contraseña"])==str(password):
 
-               # session['name'] = user['name']
+               # session['names'] = user['name']
                # session['email'] = user['email']
                 return render_template("buscarprofesor.html")
             else:
