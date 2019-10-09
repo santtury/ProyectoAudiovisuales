@@ -33,6 +33,12 @@ def inicio():
     data = cur.fetchall()
     return render_template('registrar.html', profesores = data)
 
+@app.route('/seguimiento')
+def seguimiento():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM seguimiento')
+    data = cur.fetchall()
+    return render_template('seguimientoProfesor.html', seguimientos = data)
 
 @app.route("/getTime", methods=['GET'])
 def getTime():
@@ -84,6 +90,23 @@ def add_profesor():
          (nombre,apellido,cedula,email,programa,contraseña))
         mysql.connection.commit()
         flash('Profesor Agregado')
+
+        return redirect(url_for('index'))
+
+
+@app.route('/add_seguimiento',  methods=['POST'])
+def add_seguimiento():
+    if  request.method == 'POST':
+        idseguimiento = request.form['Idseguimiento']
+        profesor = request.form['Profesor']
+        prestamo = request.form['Prestamo']
+        calificacion = request.form['Calificacion']
+                
+        cur = mysql.connection.cursor()
+        cur.execute('INSERT INTO seguimiento (Idseguimiento,Profesor,Prestamo,Calificacion) VALUES (%s, %s, %s,%s)',
+         (idseguimiento,profesor,prestamo,calificacion))
+        mysql.connection.commit()
+        flash('Seguimeitno Agregado')
 
         return redirect(url_for('index'))
 
