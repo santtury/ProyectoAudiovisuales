@@ -1,0 +1,42 @@
+{% extends 'nuevoLayout.html' %}
+
+{% block title %} BusquedaEquipo {% endblock %}
+
+
+{% block body %}
+
+<br>
+<form action="/BuscarEquipo" method="POST">
+    <input type="text" name="busquedaEquipo" placeholder="BusquedaEquipo">
+    <button type="submit">Buscar</button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+            <tr> 
+                    <th scope="col">Id</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">facultad</th>
+                    <th scope="col">EstadoActual</th>
+                    
+            </tr>
+    </thead>
+    <tbody>
+
+            {% for equipo in equipos  %}
+            <tr>
+                    <th scope="row">{{equipo.0}}</th>
+                    <td>{{equipo.1}}</td>
+                    <td>{{equipo.3}}</td>
+                    <td>{{equipo.4}}</td>
+
+                    <td>
+                            <a href="/edit/{{equipo.2}}">Editar</a>
+                            <a href="/delete/{{equipo.0}}">Eliminar</a>
+                    </td>
+            </tr>
+            {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
