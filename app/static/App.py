@@ -33,12 +33,23 @@ def inicio():
     data = cur.fetchall()
     return render_template('registrar.html', profesores = data)
 
+
+@app.route('/inicioEquipos')
+def inicioEquipos():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM equipos')
+    data = cur.fetchall()
+    return render_template('registrarEquipo.html', equipos = data)
+
+
+
 @app.route('/seguimiento')
 def seguimiento():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM seguimiento')
     data = cur.fetchall()
     return render_template('seguimientoProfesor.html', seguimientos = data)
+
 
 @app.route("/getTime", methods=['GET'])
 def getTime():
@@ -166,6 +177,35 @@ def Buscar():
         data = cur.fetchall()
         print(data)
         return render_template('buscarprofesor.html', profesores = data)
+
+
+
+@app.route('/BuscarEquipo', methods = ['POST'])
+def BuscarEquipo():
+       if request.method == 'POST':
+        busquedaEquipo = request.form['busquedaEquipo']
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM equipos WHERE id = %(id)s", {'id':busquedaEquipo})
+        data = cur.fetchall()
+        print(data)
+        return render_template('buscarEquipo.html', equipos = data)
+
+
+@app.route('/add_equipo',  methods=['POST'])
+def add_equipo():
+    if  request.method == 'POST':
+        id =request.form ['id']
+        nombre = request.form['Nombre']
+        facultad = request.form['facultad']
+        estadoActual = request.form['estadoActual']
+        
+        cur = mysql.connection.cursor()
+        cur.execute('INSERT INTO equipos (id,nombre,facultad,estadoActual) VALUES (%s,%s, %s,%s)',
+         (id,nombre,facultad,estadoActual))
+        mysql.connection.commit()
+        flash('Equipo Agregado')
+
+        return redirect(url_for('index'))        
 
 
 
