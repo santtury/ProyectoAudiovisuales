@@ -194,18 +194,35 @@ def BuscarEquipo():
 @app.route('/add_equipo',  methods=['POST'])
 def add_equipo():
     if  request.method == 'POST':
-        id =request.form ['id']
-        nombre = request.form['Nombre']
+       
+        nombre = request.form['nombre']
         facultad = request.form['facultad']
         estadoActual = request.form['estadoActual']
         
         cur = mysql.connection.cursor()
-        cur.execute('INSERT INTO equipos (id,nombre,facultad,estadoActual) VALUES (%s,%s, %s,%s)',
-         (id,nombre,facultad,estadoActual))
+        cur.execute('INSERT INTO equipos (nombre,facultad,estadoActual) VALUES (%s,%s, %s)',
+         (nombre,facultad,estadoActual))
         mysql.connection.commit()
         flash('Equipo Agregado')
 
-        return redirect(url_for('index'))        
+        return redirect(url_for('index'))  
+
+@app.route('/deleteEquipo/<string:id>')
+def delete_equipo(id): 
+    cur=mysql.connection.cursor()
+    cur.execute('DELETE FROM equipos WHERE id= {0}'.format(id))
+    mysql.connection.commit()
+    flash('equipo eliminado exitosamente')
+    return redirect(url_for('index'))
+
+
+@app.route('/editarEquipo/<id>')
+def editar_equipo(id):
+    cur=mysql.connection.cursor()
+    cur.execute('SELECT * FROM equipos WHERE id=%s', (id))
+    data=cur.fetchall()
+    return render_template('editarEquipo.html', equipo=data[0])
+
 
 
 
