@@ -23,6 +23,14 @@ app.secret_key = 'mysecretkey'
 def index():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM profesores')
+    fecha="13/10/2019"
+    day=(fecha[0]+fecha[1])
+    dos= int(float(day))
+    uno=time.strftime('%d')
+    dia=int(float(uno))
+    if dia+3>=day:
+        print("DIAAAAA:  ", dia)
+        print("FECHA CORRECTA:  ", dia)
     data = cur.fetchall()
     return render_template('login.html', profesores = data)
 
@@ -53,8 +61,8 @@ def seguimiento():
 
 @app.route("/getTime", methods=['GET'])
 def getTime():
-    data=time.strftime('%Y')
-    print("AÑO:  ", data)
+    dia=time.strftime('%Y')
+    print("DIAAAAA:  ", dia)
     print("server time : ", time.strftime('%A %B, %d %Y %H:%M:%S'))
     return render_template('registrar.html')
 
@@ -69,10 +77,11 @@ def login():
         user = curl.fetchone()
         print(str(password))
 
+
         curl.close()
         if len(user) > 0:
             if str(user["contraseña"])==str(password):
-
+                
                # session['names'] = user['name']
                # session['email'] = user['email']
                 return render_template("layoutProfesor.html")
