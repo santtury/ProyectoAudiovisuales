@@ -39,7 +39,7 @@ def inicio():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM profesores')
     data = cur.fetchall()
-    return render_template('registrar.html', profesores = data)
+    return render_template('registrarProfesores.html', profesores = data)
 
 
 @app.route('/inicioEquipos')
@@ -58,6 +58,12 @@ def seguimiento():
     data = cur.fetchall()
     return render_template('seguimientoProfesor.html', seguimientos = data)
 
+@app.route('/prestamos')
+def prestamos():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM prestamos')
+    data = cur.fetchall()
+    return render_template('registrarPrestamo.html', prestamos = data)
 
 @app.route("/getTime", methods=['GET'])
 def getTime():
@@ -131,6 +137,24 @@ def add_seguimiento():
         return redirect(url_for('index'))
 
 
+@app.route('/add_prestamo',  methods=['POST'])
+def add_prestamo():
+    if  request.method == 'POST':
+        idPrestamo = request.form['idPrestamo']
+        idEquipo = request.form['idEquipo']
+        cedulaProfesor = request.form['cedulaProfesor']
+        salon = request.form['salon']
+        horario = request.form['horario']
+        fecha = request.form['fecha']
+        disponibilidad = request.form['disponibilidad']
+                
+        cur = mysql.connection.cursor()
+        cur.execute('INSERT INTO prestamos (idPrestamo,idEquipo,cedulaProfesor,salon,horario,fecha,disponibilidad) VALUES (%s, %s, %s, %s, %s, %s, %s)',
+         (idPrestamo,idEquipo,cedulaProfesor,salon,horario,fecha,disponibilidad))
+        mysql.connection.commit()
+        flash('Prestamo Agregado')
+
+        return redirect(url_for('/prestamos'))
 
 @app.route('/edit/<cedula>')
 def get_contact(cedula):
@@ -203,18 +227,35 @@ def BuscarEquipo():
 @app.route('/add_equipo',  methods=['POST'])
 def add_equipo():
     if  request.method == 'POST':
-        id =request.form ['id']
-        nombre = request.form['Nombre']
+       
+        nombre = request.form['nombre']
         facultad = request.form['facultad']
         estadoActual = request.form['estadoActual']
         
         cur = mysql.connection.cursor()
-        cur.execute('INSERT INTO equipos (id,nombre,facultad,estadoActual) VALUES (%s,%s, %s,%s)',
-         (id,nombre,facultad,estadoActual))
+        cur.execute('INSERT INTO equipos (nombre,facultad,estadoActual) VALUES (%s,%s, %s)',
+         (nombre,facultad,estadoActual))
         mysql.connection.commit()
         flash('Equipo Agregado')
 
-        return redirect(url_for('index'))        
+        return redirect(url_for('index'))  
+
+@app.route('/deleteEquipo/<string:id>')
+def delete_equipo(id): 
+    cur=mysql.connection.cursor()
+    cur.execute('DELETE FROM equipos WHERE id= {0}'.format(id))
+    mysql.connection.commit()
+    flash('equipo eliminado exitosamente')
+    return redirect(url_for('index'))
+
+
+@app.route('/editarEquipo/<id>')
+def editar_equipo(id):
+    cur=mysql.connection.cursor()
+    cur.execute('SELECT * FROM equipos WHERE id=%s', (id))
+    data=cur.fetchall()
+    return render_template('editarEquipo.html', equipo=data[0])
+
 
 
 

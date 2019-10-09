@@ -33,24 +33,15 @@
 
             <form action="/add_equipo" method="POST">
 
-                <div class="form-group">
-
-
-                    <label>id:</label>
-
-
-                    <input type="text" class="form-control" name="id">
-
-
-                </div>
-                 
+               
+                                 
                 <div class="form-group">
 
 
                     <label>Nombre:</label>
 
 
-                    <input type="text" class="form-control" name="Nombre">
+                    <input type="text" class="form-control" name="nombre">
 
 
                 </div>
@@ -74,7 +65,7 @@
                     <label>Estado actual:</label>
 
 
-                    <input type="text" class="form-control" name="Estado Actual">
+                    <input type="text" class="form-control" name="estadoActual">
 
 
                 </div>
@@ -89,21 +80,6 @@
 
 
                 </div>
-
-
-            </form>
-
-                </div>
-
-                <form action="/Busqueda" method="POST">
-
-                <div class="form-group">
-
-                <button class="btn btn-primary">Buscar</button>
-                </div>
-
-
-            </form>
     
 
         </div>
@@ -134,8 +110,8 @@
                     <td>{{equipo.3}}</td>
 
                     <td>
-                            <a href="/edit/{{equipo.2}}">Editar</a>
-                            <a href="/delete/{{equipo.0}}">Eliminar</a>
+                            <a href="/editarEquipo/{{equipo.2}}">Editar</a>
+                            <a href="/deleteEquipo/{{equipo.0}}">Eliminar</a>
                     </td>
             </tr>
             {% endfor %}
