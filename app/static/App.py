@@ -31,7 +31,7 @@ def inicio():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM profesores')
     data = cur.fetchall()
-    return render_template('registrar.html', profesores = data)
+    return render_template('registrarProfesores.html', profesores = data)
 
 
 @app.route('/inicioEquipos')
@@ -50,6 +50,12 @@ def seguimiento():
     data = cur.fetchall()
     return render_template('seguimientoProfesor.html', seguimientos = data)
 
+@app.route('/prestamos')
+def prestamos():
+    cur = mysql.connection.cursor()
+    cur.execute('SELECT * FROM prestamos')
+    data = cur.fetchall()
+    return render_template('registrarPrestamo.html', prestamos = data)
 
 @app.route("/getTime", methods=['GET'])
 def getTime():
@@ -122,6 +128,24 @@ def add_seguimiento():
         return redirect(url_for('index'))
 
 
+@app.route('/add_prestamo',  methods=['POST'])
+def add_prestamo():
+    if  request.method == 'POST':
+        idPrestamo = request.form['idPrestamo']
+        idEquipo = request.form['idEquipo']
+        cedulaProfesor = request.form['cedulaProfesor']
+        salon = request.form['salon']
+        horario = request.form['horario']
+        fecha = request.form['fecha']
+        disponibilidad = request.form['disponibilidad']
+                
+        cur = mysql.connection.cursor()
+        cur.execute('INSERT INTO prestamos (idPrestamo,idEquipo,cedulaProfesor,salon,horario,fecha,disponibilidad) VALUES (%s, %s, %s, %s, %s, %s, %s)',
+         (idPrestamo,idEquipo,cedulaProfesor,salon,horario,fecha,disponibilidad))
+        mysql.connection.commit()
+        flash('Prestamo Agregado')
+
+        return redirect(url_for('/prestamos'))
 
 @app.route('/edit/<cedula>')
 def get_contact(cedula):
