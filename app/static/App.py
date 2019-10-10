@@ -23,14 +23,14 @@ app.secret_key = 'mysecretkey'
 def index():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM profesores')
-    fecha="13/10/2019"
-    day=(fecha[0]+fecha[1])
-    dos= int(float(day))
-    uno=time.strftime('%d')
-    dia=int(float(uno))
-    if dia+3>=day:
-        print("DIAAAAA:  ", dia)
-        print("FECHA CORRECTA:  ", dia)
+    #fecha="13/10/2019"
+   # day=(fecha[0]+fecha[1])
+    #dos= int(float(day))
+   # uno=time.strftime('%d')
+   # dia=int(float(uno))
+   # if dia+3>=day:
+   #     print("DIAAAAA:  ", dia)
+   #     print("FECHA CORRECTA:  ", dia)
     data = cur.fetchall()
     return render_template('login.html', profesores = data)
 
@@ -238,15 +238,15 @@ def add_equipo():
         mysql.connection.commit()
         flash('Equipo Agregado')
 
-        return redirect(url_for('index'))  
+        return redirect(url_for('inicioEquipos'))  
 
 @app.route('/deleteEquipo/<string:id>')
 def delete_equipo(id): 
     cur=mysql.connection.cursor()
     cur.execute('DELETE FROM equipos WHERE id= {0}'.format(id))
     mysql.connection.commit()
-    flash('equipo eliminado exitosamente')
-    return redirect(url_for('index'))
+    flash('Equipo eliminado')
+    return redirect(url_for('inicioEquipos'))
 
 
 @app.route('/editarEquipo/<id>')
