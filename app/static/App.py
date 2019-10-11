@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash,session
 from flask_mysqldb import MySQL,MySQLdb
 from flask import Flask
+from datetime import datetime, date, time, timedelta
+import calendar
 import time
 import os
 
@@ -23,14 +25,15 @@ app.secret_key = 'mysecretkey'
 def index():
     cur = mysql.connection.cursor()
     cur.execute('SELECT * FROM profesores')
-    fecha="13/10/2019"
-    day=(fecha[0]+fecha[1])
-    dos= int(float(day))
-    uno=time.strftime('%d')
-    dia=int(float(uno))
-    if dia+3>=day:
-        print("DIAAAAA:  ", dia)
-        print("FECHA CORRECTA:  ", dia)
+    fecha = "14/10/2019"
+    day = (fecha[0]+fecha[1])
+    dos = int(float(day))
+    uno = time.strftime('%d')
+    dia = int(float(uno))
+    dias = dia+3
+    if dos >= dias :
+        print("DIAS HABILES:  ", dias)
+        print("FECHA SOLICITUD:  ", dos)
     data = cur.fetchall()
     return render_template('login.html', profesores = data)
 
