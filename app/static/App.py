@@ -268,7 +268,7 @@ def editar_equipo(id):
     return render_template('editarEquipo.html', equipo=data[0])
 
 @app.route('/updateEquipo/<id>', methods=['POST'])
-def update_equipo(id):
+def updateEquipo(id):
   if request.method == 'POST':
       nombre = request.form['nombre']
       facultad = request.form['facultad']
@@ -279,8 +279,8 @@ def update_equipo(id):
         SET nombre = %s,
           facultad = %s,
           estadoActual = %s
-          HWERE id = %s  
-      """, (nombre, facultad, estadoActual,id))
+          WHERE id = %s
+      """, (nombre, facultad, estadoActual, id))
       mysql.connection.commit()
       flash('equipo actualizado satisfactoriamente')
       return redirect(url_for('inicioEquipos'))
