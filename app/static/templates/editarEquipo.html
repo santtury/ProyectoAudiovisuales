@@ -1,5 +1,8 @@
-<form action="/">
+<form action="/updateEquipo/{{equipo.0}}" method="POST">
 
-
-
+    <input type="text" name="nombre" placeholder="nombre" value="{{ equipo.1}}">
+    <input type="text" name="facultad" placeholder="facultad" value="{{ equipo.2}}">
+    <input type="text" name="estadoActual" placeholder="estadoActual" value="{{ equipo.3}}">
+    
+    <button type="submit" class="btn btn-outline-secondary">Editar</button>
 </form>

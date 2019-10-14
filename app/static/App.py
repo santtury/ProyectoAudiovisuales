@@ -53,6 +53,14 @@ def inicioEquipos():
     return render_template('registrarEquipo.html', equipos = data)
 
 
+@app.route('/buscarEquipos')
+def buscarEquipos():
+    cur=mysql.connection.cursor()
+    cur.execute('SELECT * FROM equipos')
+    data = cur.fetchall()
+    return render_template('buscarEquipo.html', equipos=data)
+
+
 
 @app.route('/seguimiento')
 def seguimiento():
@@ -259,6 +267,23 @@ def editar_equipo(id):
     data=cur.fetchall()
     return render_template('editarEquipo.html', equipo=data[0])
 
+@app.route('/updateEquipo/<id>', methods=['POST'])
+def update_equipo(id):
+  if request.method == 'POST':
+      nombre = request.form['nombre']
+      facultad = request.form['facultad']
+      estadoActual = request.form['estadoActual'] 
+      cur = mysql.connection.cursor()
+      cur.execute("""
+        UPDATE equipos
+        SET nombre = %s,
+          facultad = %s,
+          estadoActual = %s
+          HWERE id = %s  
+      """, (nombre, facultad, estadoActual,id))
+      mysql.connection.commit()
+      flash('equipo actualizado satisfactoriamente')
+      return redirect(url_for('inicioEquipos'))
 
 
 

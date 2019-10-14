@@ -7,7 +7,7 @@
 
 <br>
 <form action="/BuscarEquipo" method="POST">
-    <input type="text" name="busquedaEquipo" placeholder="BusquedaEquipo">
+    <input type="text" name="busquedaEquipo" placeholder="Busqueda">
     <button type="submit">Buscar</button>
 </form>
 
@@ -30,10 +30,7 @@
                     <td>{{equipo.3}}</td>
                     <td>{{equipo.4}}</td>
 
-                    <td>
-                            <a href="/edit/{{equipo.2}}">Editar</a>
-                            <a href="/delete/{{equipo.0}}">Eliminar</a>
-                    </td>
+                    
             </tr>
             {% endfor %}
     </tbody>
