@@ -241,7 +241,7 @@ def delete_equipo(id):
 @app.route('/editarEquipo/<id>')
 def editar_equipo(id):
     cur=mysql.connection.cursor()
-    cur.execute('SELECT * FROM equipos WHERE id=%s', (id))
+    cur.execute('SELECT * FROM equipos WHERE id= %s', (id))
     data=cur.fetchall()
     return render_template('editarEquipo.html', equipo=data[0])
 
@@ -264,6 +264,7 @@ def updateEquipo(id):
       return redirect(url_for('inicioEquipos'))
 
 #--------------------------------START Prestamos--------------------------------
+
 @app.route('/prestamos')
 def prestamos():
     cur = mysql.connection.cursor()
@@ -292,6 +293,49 @@ def add_prestamo():
         flash('Prestamo Agregado')
 
         return redirect(url_for('prestamos'))
+
+@app.route('/deletePrestamo/<string:id>')
+def delete_prestamo(id): 
+    cur=mysql.connection.cursor()
+    cur.execute('DELETE FROM prestamos WHERE idPrestamo= {0}'.format(id))
+    mysql.connection.commit()
+    flash('Prestamo eliminado :.v')
+    return redirect(url_for('prestamos'))
+
+
+@app.route('/editarPrestamo/<id>')
+def editar_prestamo(id):
+    cur=mysql.connection.cursor()
+    cur.execute('SELECT * FROM prestamos WHERE idPrestamo=%s', (id))
+    data=cur.fetchall()
+    return render_template('editarPrestamo.html', prestamo=data[0])
+
+@app.route('/updatePrestamo/<id>', methods=['POST'])
+def update_prestamo(id):
+     if request.method == 'POST':
+         idEquipo = request.form['idEquipo']
+         cedulaProfesor = request.form['cedulaProfesor']
+         salon = request.form['salon']
+         horario = request.form['horario']
+         fecha = request.form['fecha']
+         disponibilidad = request.form['disponibilidad']
+         
+         cur = mysql.connection.cursor()
+         cur.execute("""
+            UPDATE prestamos
+            SET idEquipo = %s,
+                cedulaProfesor = %s,
+                salon = %s,
+                horario = %s,
+                fecha = %s
+                disponibilidad = %s
+
+            WHERE idPrestamo = %s
+          """,(idEquipo, cedulaProfesor, salon, horario, fecha, disponibilidad, id))
+         cur.connection.commit()
+         flash('Prestamo actualizado :d')
+         return redirect(url_for('prestamos'))
+         
 #--------------------------------END Prestamos--------------------------------
 
 if __name__== "__main__":
