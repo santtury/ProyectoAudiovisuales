@@ -61,7 +61,6 @@ def buscarEquipos():
     data = cur.fetchall()
     return render_template("buscarEquipo.html", equipos=data)
 
-
 @app.route("/seguimiento")
 def seguimiento():
     cur = mysql.connection.cursor()
@@ -70,7 +69,7 @@ def seguimiento():
     return render_template("seguimientoProfesor.html", seguimientos=data)
 
 
-# -
+# Comparacion
 
 
 @app.route("/getTime", methods=["GET"])
