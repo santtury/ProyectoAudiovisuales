@@ -331,9 +331,10 @@ def delete_prestamo(idPrestamo):
 @app.route("/editarPrestamo/<idPrestamo>")
 def editar_prestamo(idPrestamo):
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM prestamos WHERE idPrestamo=%s", (idPrestamo))
+    cur.execute("SELECT * FROM prestamos WHERE idPrestamo=%(idp)s", {'idp':idPrestamo})
     data = cur.fetchall()
     return render_template("editarPrestamo.html", prestamo=data[0])
+
 
 
 @app.route("/updatePrestamo/<string:idPrestamo>", methods=["POST"])
