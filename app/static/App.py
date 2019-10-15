@@ -320,25 +320,25 @@ def add_prestamo():
         return redirect(url_for("prestamos"))
 
 
-@app.route("/deletePrestamo/<string:id>")
-def delete_prestamo(id):
+@app.route("/deletePrestamo/<string:idPrestamo>")
+def delete_prestamo(idPrestamo):
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM prestamos WHERE idPrestamo= {0}".format(id))
+    cur.execute("DELETE FROM prestamos WHERE idPrestamo= {0}".format(idPrestamo))
     mysql.connection.commit()
     flash("Prestamo eliminado :.v")
     return redirect(url_for("prestamos"))
 
 
-@app.route("/editarPrestamo/<id>")
-def editar_prestamo(id):
+@app.route("/editarPrestamo/<idPrestamo>")
+def editar_prestamo(idPrestamo):
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM prestamos WHERE idPrestamo=%s", (id))
+    cur.execute("SELECT * FROM prestamos WHERE idPrestamo=%s", (idPrestamo))
     data = cur.fetchall()
     return render_template("editarPrestamo.html", prestamo=data[0])
 
 
-@app.route("/updatePrestamo/<id>", methods=["POST"])
-def update_prestamo(id):
+@app.route("/updatePrestamo/<string:idPrestamo>", methods=["POST"])
+def update_prestamo(idPrestamo):
     if request.method == "POST":
         idEquipo = request.form["idEquipo"]
         cedulaProfesor = request.form["cedulaProfesor"]
@@ -347,7 +347,6 @@ def update_prestamo(id):
         fecha = request.form["fecha"]
         disponibilidad = request.form["disponibilidad"]
         estado = request.form["estado"]
-
         cur = mysql.connection.cursor()
         cur.execute(
             """
@@ -356,8 +355,8 @@ def update_prestamo(id):
                 cedulaProfesor = %s,
                 salon = %s,
                 horario = %s,
-                fecha = %s
-                disponibilidad = %s
+                fecha = %s,
+                disponibilidad = %s,
                 estado = %s
 
             WHERE idPrestamo = %s
@@ -370,7 +369,7 @@ def update_prestamo(id):
                 fecha,
                 disponibilidad,
                 estado,
-                id,
+                idPrestamo,
             ),
         )
         cur.connection.commit()
