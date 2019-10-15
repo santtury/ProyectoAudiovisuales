@@ -1,0 +1,51 @@
+{% extends 'nuevoLayout.html' %}
+
+{% block title %} BuscarPrestamo {% endblock %}
+
+
+{% block body %}
+
+<br>
+<form action="/BuscarPrestamo" method="POST">
+    <input type="text" name="busquedaPrestamo" placeholder="Busqueda">
+    <button type="submit">Buscar</button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Id Prestamo</th>
+            <th scope="col">Id Equipo</th>
+            <th scope="col">Cédula Profesor</th>
+            <th scope="col">Salón</th>
+            <th scope="col">Horario</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Disponibilidad</th>
+            <th scope="col">Estado</th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for prestamo in prestamos  %}
+        <tr>
+            <th scope="row">{{prestamo.0}}</th>
+            <td>{{prestamo.1}}</td>
+            <td>{{prestamo.2}}</td>
+            <td>{{prestamo.3}}</td>
+            <td>{{prestamo.4}}</td>
+            <td>{{prestamo.5}}</td>
+            <td>{{prestamo.6}}</td>
+            <td>{{prestamo.7}}</td>
+
+            <td>
+                <a href="/editarPrestamo/{{prestamo.0}}">Editar</a>
+                <a href="/deletePrestamo/{{prestamo.0}}">Eliminar</a>
+        </td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
