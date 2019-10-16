@@ -61,6 +61,7 @@ def buscarEquipos():
     data = cur.fetchall()
     return render_template("buscarEquipo.html", equipos=data)
 
+
 @app.route("/seguimiento")
 def seguimiento():
     cur = mysql.connection.cursor()
@@ -294,6 +295,14 @@ def prestamos():
     return render_template("registrarPrestamo.html", prestamos=data)
 
 
+@app.route("/listarPrestamos")
+def listarPrestamos():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM prestamos")
+    data = cur.fetchall()
+    return render_template("listarSolicitudes.html", prestamos=data)
+
+
 @app.route("/add_prestamo", methods=["POST"])
 def add_prestamo():
 
@@ -306,12 +315,14 @@ def add_prestamo():
         horario = request.form["horario"]
         fecha = request.form["fecha"]
         disponibilidad = request.form["disponibilidad"]
+        fechaS = time.strftime("%A %B, %d %Y %H:%M:%S")
+        fechaSolicitud=str(fechaS)
         # estado = request.form['estado']
 
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,disponibilidad) VALUES (%s, %s, %s, %s, %s, %s)",
-            (idEquipo, cedulaProfesor, salon, horario, fecha, disponibilidad),
+            "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,disponibilidad,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (idEquipo, cedulaProfesor, salon, horario, fecha, disponibilidad, fechaSolicitud),
         )
         mysql.connection.commit()
         flash("Prestamo Agregado")
@@ -331,10 +342,9 @@ def delete_prestamo(idPrestamo):
 @app.route("/editarPrestamo/<idPrestamo>")
 def editar_prestamo(idPrestamo):
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM prestamos WHERE idPrestamo=%(idp)s", {'idp':idPrestamo})
+    cur.execute("SELECT * FROM prestamos WHERE idPrestamo=%(idp)s", {"idp": idPrestamo})
     data = cur.fetchall()
     return render_template("editarPrestamo.html", prestamo=data[0])
-
 
 
 @app.route("/updatePrestamo/<string:idPrestamo>", methods=["POST"])
