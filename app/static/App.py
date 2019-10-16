@@ -29,9 +29,11 @@ def index():
     day = fecha[0] + fecha[1]
     dos = int(float(day))
     uno = time.strftime("%d")
+    cast=str(uno)
     dia = int(float(uno))
     dias = dia + 3
     if dos >= dias:
+        print("GUARDAR",cast)
         print("DIAS HABILES:  ", dias)
         print("FECHA SOLICITUD:  ", dos)
     data = cur.fetchall()
@@ -46,20 +48,7 @@ def inicio():
     return render_template("registrarProfesores.html", profesores=data)
 
 
-@app.route("/inicioEquipos")
-def inicioEquipos():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM equipos")
-    data = cur.fetchall()
-    return render_template("registrarEquipo.html", equipos=data)
 
-
-@app.route("/buscarEquipos")
-def buscarEquipos():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM equipos")
-    data = cur.fetchall()
-    return render_template("buscarEquipo.html", equipos=data)
 
 @app.route("/seguimiento")
 def seguimiento():
@@ -108,25 +97,7 @@ def login():
     return render_template("layoutAdmin.html")
 
 
-@app.route("/add_profesor", methods=["POST"])
-def add_profesor():
-    if request.method == "POST":
-        nombre = request.form["Nombre"]
-        apellido = request.form["Apellido"]
-        cedula = request.form["Cedula"]
-        email = request.form["Email"]
-        programa = request.form["Programa"]
-        contraseña = request.form["Contraseña"]
 
-        cur = mysql.connection.cursor()
-        cur.execute(
-            "INSERT INTO profesores (Nombre,Apellido,Cedula,Email,Programa,Contraseña) VALUES (%s, %s, %s,%s, %s, %s)",
-            (nombre, apellido, cedula, email, programa, contraseña),
-        )
-        mysql.connection.commit()
-        flash("Profesor Agregado")
-
-        return redirect(url_for("index"))
 
 
 @app.route("/add_seguimiento", methods=["POST"])
@@ -148,8 +119,27 @@ def add_seguimiento():
         return redirect(url_for("index"))
 
 
-# -
+# --------------------------------START Profesores--------------------------------
 
+@app.route("/add_profesor", methods=["POST"])
+def add_profesor():
+    if request.method == "POST":
+        nombre = request.form["Nombre"]
+        apellido = request.form["Apellido"]
+        cedula = request.form["Cedula"]
+        email = request.form["Email"]
+        programa = request.form["Programa"]
+        contraseña = request.form["Contraseña"]
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            "INSERT INTO profesores (Nombre,Apellido,Cedula,Email,Programa,Contraseña) VALUES (%s, %s, %s,%s, %s, %s)",
+            (nombre, apellido, cedula, email, programa, contraseña),
+        )
+        mysql.connection.commit()
+        flash("Profesor Agregado")
+
+        return redirect(url_for("index"))
 
 @app.route("/edit/<cedula>")
 def get_contact(cedula):
@@ -213,6 +203,7 @@ def Buscar():
         print(data)
         return render_template("buscarprofesor.html", profesores=data)
 
+# --------------------------------START Equipos--------------------------------
 
 @app.route("/BuscarEquipo", methods=["POST"])
 def BuscarEquipo():
@@ -224,6 +215,20 @@ def BuscarEquipo():
         print(data)
         return render_template("buscarEquipo.html", equipos=data)
 
+@app.route("/inicioEquipos")
+def inicioEquipos():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM equipos")
+    data = cur.fetchall()
+    return render_template("registrarEquipo.html", equipos=data)
+
+
+@app.route("/buscarEquipos")
+def buscarEquipos():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM equipos")
+    data = cur.fetchall()
+    return render_template("buscarEquipo.html", equipos=data)
 
 @app.route("/add_equipo", methods=["POST"])
 def add_equipo():
