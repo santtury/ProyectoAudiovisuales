@@ -51,14 +51,6 @@ def inicio():
 
 
 
-@app.route("/buscarEquipos")
-def buscarEquipos():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM equipos")
-    data = cur.fetchall()
-    return render_template("buscarEquipo.html", equipos=data)
-
-
 @app.route("/seguimiento")
 def seguimiento():
     cur = mysql.connection.cursor()
