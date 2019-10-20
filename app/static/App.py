@@ -229,7 +229,7 @@ def buscarEquipos():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM equipos")
     data = cur.fetchall()
-    return render_template("buscarEquipo.html", equipos=data)
+    return render_template("buscarEquipo.html", equipo=data)
 
 @app.route("/add_equipo", methods=["POST"])
 def add_equipo():
@@ -397,7 +397,7 @@ def buscarPrestamo():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM prestamos")
     data = cur.fetchall()
-    return render_template("buscarPrestamo.html", prestamos=data)
+    return render_template("buscarPrestamo.html", prestamo=data)
 
 
 @app.route("/BuscarPrestamo", methods=["POST"])
