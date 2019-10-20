@@ -1,143 +1,107 @@
 <!DOCTYPE html>
-
-
+<!-- <html lang="en"> -->
 <html>
 
-
 <head>
+    <!-- --------------------------------------------------------------------------------------- -->
+    <!-- Required meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Audiovisuales</title>
 
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <!-- --------------------------------------------------------------------------------------- -->
+    
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Audiovusuales</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <meta charset="utf-8" />
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Inicio<span class="sr-only">(current)</span></a>
+                </li>
+                <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Profesores
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/inicio">Registrar</a>
+                        <a class="dropdown-item" href="/Busqueda">Buscar</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/seguimiento">Seguimiento</a>
+                    </div>
+                </li>
 
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-
-
-    <title>{% block title %} {% endblock %}</title>
-
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
-    <link rel="stylesheet" type="text/css" media="screen"
-        href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-
-
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Prestamos
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/prestamos">Registro de Prestamos</a>
+                        <a class="dropdown-item" href="/buscarPrestamos">Búsqueda de Prestamos</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="/listarPrestamos">Listado solicitudes</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Equipos
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="/inicioEquipos">Registrar Equipo</a>
+                        <a class="dropdown-item" href="/buscarEquipos">Buscar</a>
+                        <div class="dropdown-divider"></div>
+                       
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+            <!-- <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+            </form> -->
+        </div>
+    </nav>
 </head>
 
-
 <body>
-
-
-    <nav class="navbar navbar-default">
-
-
-        <div class="container">
-
-
-            <div class="navbar-header">
-
-
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
-                    aria-expanded="false" aria-controls="navbar">
-
-
-                    <span class="sr-only">Toggle navigation</span>
-
-
-                    <span class="icon-bar"></span>
-
-
-                    <span class="icon-bar"></span>
-
-
-                    <span class="icon-bar"></span>
-
-
-                </button>
-
-
-                <a class="navbar-brand" href="#">AUDIOVISUALES</a>
-
-
-            </div>
-
-
-            <div id="navbar" class="collapse navbar-collapse">
-
-
-                <ul class="nav navbar-nav">
-
-
-                    <li>
-
-
-                        <a href="/">Inicio</a>
-
-
-                    </li>
-
-
-                    <li>
-
-
-                        <a href="/login">Equipos</a>
-
-
-                    </li>
-
-
-                    <li>
-
-
-                        <a href="/">Prestamo</a>
-
-
-                    </li>
-
-                    <li>
-
-
-                        <a href="/">Disponibilidad</a>
-
-
-                    </li>
-
-                    <li>
-
-
-                        <a href="/">Seguimiento</a>
-
-
-                    </li>
-
-
-
-
-                </ul>
-
-
-            </div>
-
-
-        </div>
-
-
-    </nav>
-
-
-
-
-    {% block content %} {% endblock %}
-
-
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- --------------------------------------------------------------------------------------- -->
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+    <!-- --------------------------------------------------------------------------------------- -->
 
 
 </body>
 
+<body>
+    <div class="container">
+        {% block body %}
+        <h6>Co-Masters: Sebastian Anttury - Danny Macias - Fabio Hurtado</h6>
+        {% endblock%}
+    </div>
+</body>
 
 </html>
