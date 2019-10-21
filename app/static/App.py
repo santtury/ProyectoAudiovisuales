@@ -272,7 +272,7 @@ def inicioEquipos():
     data = cur.fetchall()
     return render_template("registrarEquipo.html", equipos=data)
 
-
+#Este metodo me permite buscar un equipo deseado
 @app.route("/buscarEquipos")
 def buscarEquipos():
     cur = mysql.connection.cursor()
@@ -280,7 +280,7 @@ def buscarEquipos():
     data = cur.fetchall()
     return render_template("buscarEquipo.html", equipo=data)
 
-
+#Este metodo me permite registrar un equipo
 @app.route("/add_equipo", methods=["POST"])
 def add_equipo():
     """
