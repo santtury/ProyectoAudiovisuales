@@ -72,9 +72,13 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-
+        contra = request.form["password"]
+        
+        admin= mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM profesores WHERE email=%s", (email,))
+        admin.execute("SELECT * FROM admins WHERE email=%s", (email,))
+        usuario = admin.fetchone()
         user = curl.fetchone()
         print(str(password))
 
@@ -82,14 +86,15 @@ def login():
         if len(user) > 0:
             if str(user["contraseña"]) == str(password):
 
-                # session['names'] = user['name']
-                # session['email'] = user['email']
-                return render_template("layoutProfesor.html")
+                return render_template("nuevoLayout.html")
             else:
                 return "Error password and email not match"
         else:
             return "Error user not found"
+        if len(usuario) > 0:
+            if str(usuario["password"]) == str(contra):
 
+                return render_template("nuevoLayout.html")
     else:
         return render_template("login.html")
 
