@@ -1,3 +1,4 @@
+<!-- Este html me permite manejar la informacion de los equipos -->
 {% extends 'nuevoLayout.html' %}
 {% block body %}
 
@@ -103,7 +104,7 @@
             </tr>
     </thead>
     <tbody>
-
+<!-- se optienen los datos para poder editar y eliminar un equipo -->
             {% for equipo in equipos  %}
             <tr>
                     <th scope="row">{{equipo.0}}</th>
