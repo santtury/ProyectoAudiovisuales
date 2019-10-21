@@ -302,7 +302,7 @@ def add_equipo():
 
         return redirect(url_for("inicioEquipos"))
 
-
+#Este metodo me permite eliminar un equipo 
 @app.route("/deleteEquipo/<string:id>")
 def delete_equipo(id):
     """
@@ -314,7 +314,7 @@ def delete_equipo(id):
     flash("Equipo eliminado")
     return redirect(url_for("inicioEquipos"))
 
-
+#Este metodo me permite buscar un equipo para editarlo
 @app.route("/editarEquipo/<id>")
 def editar_equipo(id):
     """
