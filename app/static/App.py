@@ -291,11 +291,11 @@ def add_equipo():
         nombre = request.form["nombre"]
         facultad = request.form["facultad"]
         estadoActual = request.form["estadoActual"]
-
+        disponibilidad = request.form["disponibilidad"]
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO equipos (nombre,facultad,estadoActual) VALUES (%s,%s, %s)",
-            (nombre, facultad, estadoActual),
+            "INSERT INTO equipos (nombre,facultad,estadoActual,disponibilidad) VALUES (%s,%s, %s,%s)",
+            (nombre, facultad, estadoActual,disponibilidad),
         )
         mysql.connection.commit()
         flash("Equipo Agregado")
@@ -332,16 +332,18 @@ def updateEquipo(id):
         nombre = request.form["nombre"]
         facultad = request.form["facultad"]
         estadoActual = request.form["estadoActual"]
+        disponibilidad = request.form["disponibilidad"]
         cur = mysql.connection.cursor()
         cur.execute(
             """
         UPDATE equipos
         SET nombre = %s,
           facultad = %s,
-          estadoActual = %s
+          estadoActual = %s,
+          disponibilidad=%s
           WHERE id = %s
       """,
-            (nombre, facultad, estadoActual, id),
+            (nombre, facultad, estadoActual, disponibilidad, id)
         )
         mysql.connection.commit()
         flash("equipo actualizado satisfactoriamente")
@@ -391,7 +393,7 @@ def add_prestamo():
         salon = request.form["salon"]
         horario = request.form["horario"]
         fecha = request.form["fecha"]
-        disponibilidad = request.form["disponibilidad"]
+        disponibilidad = request.form["estado"]
         fechaS = time.strftime("%A %B, %d %Y %H:%M:%S")
         fechaSolicitud = str(fechaS)
         # estado = request.form['estado']
@@ -446,7 +448,6 @@ def update_prestamo(idPrestamo):
         salon = request.form["salon"]
         horario = request.form["horario"]
         fecha = request.form["fecha"]
-        disponibilidad = request.form["disponibilidad"]
         estado = request.form["estado"]
         cur = mysql.connection.cursor()
         cur.execute(
@@ -457,7 +458,6 @@ def update_prestamo(idPrestamo):
                 salon = %s,
                 horario = %s,
                 fecha = %s,
-                disponibilidad = %s,
                 estado = %s
 
             WHERE idPrestamo = %s
@@ -468,7 +468,6 @@ def update_prestamo(idPrestamo):
                 salon,
                 horario,
                 fecha,
-                disponibilidad,
                 estado,
                 idPrestamo,
             ),
