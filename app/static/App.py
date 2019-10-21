@@ -325,7 +325,7 @@ def editar_equipo(id):
     data = cur.fetchall()
     return render_template("editarEquipo.html", equipo=data[0])
 
-
+#Este metodo me permite modificar y actualizar todos los datos necesarios
 @app.route("/updateEquipo/<id>", methods=["POST"])
 def updateEquipo(id):
     if request.method == "POST":
