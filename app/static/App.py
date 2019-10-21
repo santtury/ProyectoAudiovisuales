@@ -23,6 +23,10 @@ app.secret_key = "mysecretkey"
 
 @app.route("/")
 def index():
+    """
+    Método que permite ingresar a la página de inicio de la plataforma
+    """
+
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM profesores")
     fecha = "14/10/2019"
@@ -37,11 +41,15 @@ def index():
         print("DIAS HABILES:  ", dias)
         print("FECHA SOLICITUD:  ", dos)
     data = cur.fetchall()
-    return render_template("login.html", profesores=data)
+    return render_template("nuevoLayout.html", profesores=data)
 
 
 @app.route("/inicio")
 def inicio():
+    """
+    Método que permite ingresar a la página de registrar profesores
+    """
+
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM profesores")
     data = cur.fetchall()
@@ -50,17 +58,22 @@ def inicio():
 
 @app.route("/seguimiento")
 def seguimiento():
+    """
+    Método que permite ingresar a la página del seguimiento del profesor
+    """
+
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM seguimiento")
     data = cur.fetchall()
     return render_template("seguimientoProfesor.html", seguimientos=data)
 
 
-# Comparacion
-
-
 @app.route("/getTime", methods=["GET"])
 def getTime():
+    """
+    Método que permite capturar el tiempo y la fecha del servidor
+    """
+
     dia = time.strftime("%Y")
     print("DIAAAAA:  ", dia)
     print("server time : ", time.strftime("%A %B, %d %Y %H:%M:%S"))
@@ -69,6 +82,10 @@ def getTime():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    """
+    Método que permite ingresar al login de la plataforma
+    """
+
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
@@ -98,6 +115,10 @@ def login():
 
 @app.route("/add_seguimiento", methods=["POST"])
 def add_seguimiento():
+    """
+    Método que permite agregar un seguimiento del profesor
+    """
+
     if request.method == "POST":
         idseguimiento = request.form["Idseguimiento"]
         profesor = request.form["Profesor"]
@@ -120,6 +141,9 @@ def add_seguimiento():
 
 @app.route("/add_profesor", methods=["POST"])
 def add_profesor():
+    """
+    Método que permite registrar un profesor en la plataforma
+    """
     if request.method == "POST":
         nombre = request.form["Nombre"]
         apellido = request.form["Apellido"]
@@ -141,6 +165,10 @@ def add_profesor():
 
 @app.route("/edit/<cedula>")
 def get_contact(cedula):
+    """
+    Método que permite ingresar a la página de editar profesores
+    """
+
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM profesores WHERE cedula = %s", {cedula})
     data = cur.fetchall()
@@ -150,6 +178,9 @@ def get_contact(cedula):
 
 @app.route("/update/<string:cedula>", methods=["POST"])
 def update_profesor(cedula):
+    """
+    Método que permite editar a un profesor en la plataforma
+    """
     if request.method == "POST":
         nombre = request.form["nombre"]
         apellido = request.form["apellido"]
@@ -177,6 +208,9 @@ def update_profesor(cedula):
 
 @app.route("/delete/<string:cedula>")
 def delete_profesor(cedula):
+    """
+    Método que permite eliminar un profesor de la plataforma
+    """
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM profesores WHERE cedula=  %(Cedula)s", {"Cedula": cedula})
     mysql.connection.commit()
@@ -185,7 +219,9 @@ def delete_profesor(cedula):
 
 @app.route("/Busqueda")
 def Busqueda():
-
+    """
+    Método que permite ingresar a la página de buscar profesores
+    """
     return render_template("buscarprofesor.html")
 
 
@@ -223,6 +259,9 @@ def BuscarEquipo():
 
 @app.route("/inicioEquipos")
 def inicioEquipos():
+    """
+    Método que permite ingresar a la página de registrar equipos
+    """
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM equipos")
     data = cur.fetchall()
@@ -239,8 +278,11 @@ def buscarEquipos():
 
 @app.route("/add_equipo", methods=["POST"])
 def add_equipo():
-    if request.method == "POST":
+    """
+    Método que permite añadir un equipo a la plataforma
+    """
 
+    if request.method == "POST":
         nombre = request.form["nombre"]
         facultad = request.form["facultad"]
         estadoActual = request.form["estadoActual"]
@@ -258,6 +300,9 @@ def add_equipo():
 
 @app.route("/deleteEquipo/<string:id>")
 def delete_equipo(id):
+    """
+    Método que permite eliminar un equipo de la plataforma
+    """
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM equipos WHERE id= {0}".format(id))
     mysql.connection.commit()
@@ -267,6 +312,9 @@ def delete_equipo(id):
 
 @app.route("/editarEquipo/<id>")
 def editar_equipo(id):
+    """
+    Método que permite ingresar a la página de editar equipos
+    """
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM equipos WHERE id= %s", (id))
     data = cur.fetchall()
@@ -315,7 +363,7 @@ def prestamos():
 @app.route("/listarPrestamos")
 def listarPrestamos():
     """
-    Método que permite listar las solicitudes de prestamos realizadas prstamos
+    Método que permite listar las solicitudes de prestamos realizadas
     """
 
     cur = mysql.connection.cursor()
@@ -326,6 +374,9 @@ def listarPrestamos():
 
 @app.route("/add_prestamo", methods=["POST"])
 def add_prestamo():
+    """
+    Método que permite registrar un prestamos en la plataforma
+    """
 
     if request.method == "POST":
 
@@ -361,6 +412,9 @@ def add_prestamo():
 
 @app.route("/deletePrestamo/<string:idPrestamo>")
 def delete_prestamo(idPrestamo):
+    """
+    Método que permite eliminar un prestamo de la plataforma
+    """
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM prestamos WHERE idPrestamo= {0}".format(idPrestamo))
     mysql.connection.commit()
@@ -370,6 +424,9 @@ def delete_prestamo(idPrestamo):
 
 @app.route("/editarPrestamo/<idPrestamo>")
 def editar_prestamo(idPrestamo):
+    """
+    Método que permite ingresar a la página de editar prestamos
+    """
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM prestamos WHERE idPrestamo=%(idp)s", {"idp": idPrestamo})
     data = cur.fetchall()
