@@ -29,11 +29,11 @@ def index():
     day = fecha[0] + fecha[1]
     dos = int(float(day))
     uno = time.strftime("%d")
-    cast=str(uno)
+    cast = str(uno)
     dia = int(float(uno))
     dias = dia + 3
     if dos >= dias:
-        print("GUARDAR",cast)
+        print("GUARDAR", cast)
         print("DIAS HABILES:  ", dias)
         print("FECHA SOLICITUD:  ", dos)
     data = cur.fetchall()
@@ -46,9 +46,6 @@ def inicio():
     cur.execute("SELECT * FROM profesores")
     data = cur.fetchall()
     return render_template("registrarProfesores.html", profesores=data)
-
-
-
 
 
 @app.route("/seguimiento")
@@ -89,17 +86,14 @@ def login():
                 # session['email'] = user['email']
                 return render_template("layoutProfesor.html")
             else:
-                 return "Error password and email not match"
+                return "Error password and email not match"
         else:
             return "Error user not found"
-        
+
     else:
         return render_template("login.html")
 
     return render_template("layoutAdmin.html")
-
-
-
 
 
 @app.route("/add_seguimiento", methods=["POST"])
@@ -123,6 +117,7 @@ def add_seguimiento():
 
 # --------------------------------START Profesores--------------------------------
 
+
 @app.route("/add_profesor", methods=["POST"])
 def add_profesor():
     if request.method == "POST":
@@ -142,6 +137,7 @@ def add_profesor():
         flash("Profesor Agregado")
 
         return redirect(url_for("index"))
+
 
 @app.route("/edit/<cedula>")
 def get_contact(cedula):
@@ -205,17 +201,25 @@ def Buscar():
         print(data)
         return render_template("buscarprofesor.html", profesores=data)
 
+
+# --------------------------------END Profesores--------------------------------
+
 # --------------------------------START Equipos--------------------------------
+
 
 @app.route("/BuscarEquipo", methods=["POST"])
 def BuscarEquipo():
     if request.method == "POST":
         busquedaEquipo = request.form["busquedaEquipo"]
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM equipos WHERE id = %(id)s", {"id": busquedaEquipo})
+        cur.execute(
+            "SELECT * FROM equipos WHERE id = %(busca)s OR facultad = %(busca)s",
+            {"busca": busquedaEquipo},
+        )
         data = cur.fetchall()
         print(data)
         return render_template("buscarEquipo.html", equipos=data)
+
 
 @app.route("/inicioEquipos")
 def inicioEquipos():
@@ -231,6 +235,7 @@ def buscarEquipos():
     cur.execute("SELECT * FROM equipos")
     data = cur.fetchall()
     return render_template("buscarEquipo.html", equipo=data)
+
 
 @app.route("/add_equipo", methods=["POST"])
 def add_equipo():
@@ -290,11 +295,17 @@ def updateEquipo(id):
         return redirect(url_for("inicioEquipos"))
 
 
+# --------------------------------END Equipos--------------------------------
+
 # --------------------------------START Prestamos--------------------------------
 
 
 @app.route("/prestamos")
 def prestamos():
+    """
+    Método que permite ingresar a la página de registrar Prestamos
+    """
+
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM prestamos")
     data = cur.fetchall()
@@ -303,6 +314,10 @@ def prestamos():
 
 @app.route("/listarPrestamos")
 def listarPrestamos():
+    """
+    Método que permite listar las solicitudes de prestamos realizadas prstamos
+    """
+
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM prestamos")
     data = cur.fetchall()
@@ -322,13 +337,21 @@ def add_prestamo():
         fecha = request.form["fecha"]
         disponibilidad = request.form["disponibilidad"]
         fechaS = time.strftime("%A %B, %d %Y %H:%M:%S")
-        fechaSolicitud=str(fechaS)
+        fechaSolicitud = str(fechaS)
         # estado = request.form['estado']
 
         cur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,disponibilidad,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (idEquipo, cedulaProfesor, salon, horario, fecha, disponibilidad, fechaSolicitud),
+            (
+                idEquipo,
+                cedulaProfesor,
+                salon,
+                horario,
+                fecha,
+                disponibilidad,
+                fechaSolicitud,
+            ),
         )
         mysql.connection.commit()
         flash("Prestamo Agregado")

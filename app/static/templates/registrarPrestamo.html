@@ -28,7 +28,7 @@
     <div class="row">
 
 
-        <div class="col-md-6 col-md-offset-3">
+        <div class="col-md-5 col-md-offset-3">
 
 
             <form action="/add_prestamo" method="POST">
@@ -90,7 +90,8 @@
                     <label>Fecha: </label>
 
 
-                    <input type="date class=" form-control" name="fecha">
+                    <input type="date class=" class="form-control" name="fecha">
+                    <small class="form-text text-muted">Realizar la solicitud con minimo 3 dias de anticipación o la solicitud será rechazada.</small>
 
 
                 </div>
@@ -130,9 +131,9 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            
+            <th scope="col">Id Préstamo</th>
             <th scope="col">Id Equipo</th>
-            <th scope="col">Cédula Profesor</th>
+            <th scope="col">Cédula</th>
             <th scope="col">Salón</th>
             <th scope="col">Horario</th>
             <th scope="col">Fecha</th>
@@ -155,7 +156,7 @@
 
             <td>
                 <a href="/editarPrestamo/{{prestamo.0}}">Editar</a>
-                <a href="/deletePrestamo/{{prestamo.0}}">Eliminar</a>
+                <a href="/deletePrestamo/{{prestamo.0}}">Cancelar</a>
             </td>
         </tr>
         {% endfor %}

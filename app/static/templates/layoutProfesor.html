@@ -16,7 +16,7 @@
     <!-- --------------------------------------------------------------------------------------- -->
     
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Audiovusuales</a>
+        <a class="navbar-brand" href="#">Audiovisuales</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -45,10 +45,10 @@
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Prestamos
+                        Préstamos
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/prestamos">Registro de Prestamos</a>
+                        <a class="dropdown-item" href="/prestamos">Registro de Préstamos</a>
                         <a class="dropdown-item" href="/buscarPrestamos">Búsqueda de Prestamos</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/listarPrestamos">Listado solicitudes</a>
@@ -60,15 +60,15 @@
                         Equipos
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/inicioEquipos">Registrar Equipo</a>
+                        <a class="dropdown-item" href="/inicioEquipos">Registrar Equipos</a>
                         <a class="dropdown-item" href="/buscarEquipos">Buscar</a>
                         <div class="dropdown-divider"></div>
                        
                     </div>
-                </li>
+                <!-- </li>
                 <li class="nav-item">
                     <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </li>
+                </li> -->
             </ul>
             <!-- <form class="form-inline my-2 my-lg-0">
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -99,7 +99,10 @@
 <body>
     <div class="container">
         {% block body %}
-        <h6>Co-Masters: Sebastian Anttury - Danny Macias - Fabio Hurtado</h6>
+        <div align="center">
+            <h4>SCRUM DSF</h4>
+            <h6>Danny Macias - Sebastian Anttury - Fabio Hurtado</h6>
+        </div>
         {% endblock%}
     </div>
 </body>
