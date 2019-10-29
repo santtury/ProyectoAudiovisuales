@@ -96,7 +96,7 @@
 
                 </div>
 
-                <div class="form-group">
+                <!-- <div class="form-group">
 
 
                     <label>Disponibilidad: </label>
@@ -105,7 +105,7 @@
                     <input type="text" class="form-control" name="disponibilidad">
 
 
-                </div>
+                </div> -->
 
 
                 <div class="form-group">
@@ -137,7 +137,7 @@
             <th scope="col">Salón</th>
             <th scope="col">Horario</th>
             <th scope="col">Fecha</th>
-            <th scope="col">Disponibilidad</th>
+            <th scope="col">Estado</th>
             <th scope="col">Fecha de solicitud</th>
         </tr>
     </thead>
@@ -156,7 +156,7 @@
 
             <td>
                 <a href="/editarPrestamo/{{prestamo.0}}">Editar</a>
-                <a href="/deletePrestamo/{{prestamo.0}}">Cancelar</a>
+                <a href="/deletePrestamo/{{prestamo.0}}">Eliminar</a>
             </td>
         </tr>
         {% endfor %}

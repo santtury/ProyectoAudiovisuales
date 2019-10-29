@@ -90,8 +90,8 @@ def login():
         email = request.form["email"]
         password = request.form["password"]
         contra = request.form["password"]
-        
-        admin= mysql.connection.cursor(MySQLdb.cursors.DictCursor) 
+
+        admin = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM profesores WHERE email=%s", (email,))
         admin.execute("SELECT * FROM admins WHERE email=%s", (email,))
@@ -272,7 +272,8 @@ def inicioEquipos():
     data = cur.fetchall()
     return render_template("registrarEquipo.html", equipos=data)
 
-#Este metodo me permite buscar un equipo deseado
+
+# Este metodo me permite buscar un equipo deseado
 @app.route("/buscarEquipos")
 def buscarEquipos():
     cur = mysql.connection.cursor()
@@ -280,7 +281,8 @@ def buscarEquipos():
     data = cur.fetchall()
     return render_template("buscarEquipo.html", equipo=data)
 
-#Este metodo me permite registrar un equipo
+
+# Este metodo me permite registrar un equipo
 @app.route("/add_equipo", methods=["POST"])
 def add_equipo():
     """
@@ -295,14 +297,15 @@ def add_equipo():
         cur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO equipos (nombre,facultad,estadoActual,disponibilidad) VALUES (%s,%s, %s,%s)",
-            (nombre, facultad, estadoActual,disponibilidad),
+            (nombre, facultad, estadoActual, disponibilidad),
         )
         mysql.connection.commit()
         flash("Equipo Agregado")
 
         return redirect(url_for("inicioEquipos"))
 
-#Este metodo me permite eliminar un equipo 
+
+# Este metodo me permite eliminar un equipo
 @app.route("/deleteEquipo/<string:id>")
 def delete_equipo(id):
     """
@@ -314,7 +317,8 @@ def delete_equipo(id):
     flash("Equipo eliminado")
     return redirect(url_for("inicioEquipos"))
 
-#Este metodo me permite buscar un equipo para editarlo
+
+# Este metodo me permite buscar un equipo para editarlo
 @app.route("/editarEquipo/<id>")
 def editar_equipo(id):
     """
@@ -325,7 +329,8 @@ def editar_equipo(id):
     data = cur.fetchall()
     return render_template("editarEquipo.html", equipo=data[0])
 
-#Este metodo me permite modificar y actualizar todos los datos necesarios
+
+# Este metodo me permite modificar y actualizar todos los datos necesarios
 @app.route("/updateEquipo/<id>", methods=["POST"])
 def updateEquipo(id):
     if request.method == "POST":
@@ -341,9 +346,10 @@ def updateEquipo(id):
           facultad = %s,
           estadoActual = %s,
           disponibilidad=%s
-          WHERE id = %s
+
+        WHERE id = %s
       """,
-            (nombre, facultad, estadoActual, disponibilidad, id)
+            (nombre, facultad, estadoActual, disponibilidad, id),
         )
         mysql.connection.commit()
         flash("equipo actualizado satisfactoriamente")
@@ -393,26 +399,18 @@ def add_prestamo():
         salon = request.form["salon"]
         horario = request.form["horario"]
         fecha = request.form["fecha"]
-        disponibilidad = request.form["estado"]
+        # disponibilidad = request.form["estado"]
         fechaS = time.strftime("%A %B, %d %Y %H:%M:%S")
         fechaSolicitud = str(fechaS)
         # estado = request.form['estado']
 
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,disponibilidad,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-            (
-                idEquipo,
-                cedulaProfesor,
-                salon,
-                horario,
-                fecha,
-                disponibilidad,
-                fechaSolicitud,
-            ),
+            "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s)",
+            (idEquipo, cedulaProfesor, salon, horario, fecha, fechaSolicitud),
         )
         mysql.connection.commit()
-        flash("Prestamo Agregado")
+        flash("Prestamo Agregado :')")
 
         return redirect(url_for("prestamos"))
 
@@ -462,15 +460,7 @@ def update_prestamo(idPrestamo):
 
             WHERE idPrestamo = %s
           """,
-            (
-                idEquipo,
-                cedulaProfesor,
-                salon,
-                horario,
-                fecha,
-                estado,
-                idPrestamo,
-            ),
+            (idEquipo, cedulaProfesor, salon, horario, fecha, estado, idPrestamo),
         )
         cur.connection.commit()
         flash("Prestamo actualizado :d")
