@@ -345,7 +345,7 @@ def updateEquipo(id):
         SET nombre = %s,
           facultad = %s,
           estadoActual = %s,
-          disponibilidad=%s
+          disponibilidad = %s
 
         WHERE id = %s
       """,
@@ -356,6 +356,16 @@ def updateEquipo(id):
         return redirect(url_for("inicioEquipos"))
 
 
+@app.route("/listarEquipos")
+def listarEquipos():
+    """
+    Método que permite listar los equipos de la plataforma
+    """
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM equipos")
+    data = cur.fetchall()
+    return render_template("listarEquipos.html", equipo=data)
 # --------------------------------END Equipos--------------------------------
 
 # --------------------------------START Prestamos--------------------------------
