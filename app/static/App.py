@@ -101,11 +101,14 @@ def login():
 
                     if user["rol"] == "administrador":
 
-                        return render_template("layoutProfesor.html")
-
-                    else:
                         return render_template("nuevoLayout.html")
 
+
+                    else:
+
+                        return render_template("layoutProfesor.html")
+
+                                       
             else:
                 return "Error password and email not match"
         else:
