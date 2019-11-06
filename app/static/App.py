@@ -41,7 +41,7 @@ def index():
         print("DIAS HABILES:  ", dias)
         print("FECHA SOLICITUD:  ", dos)
     data = cur.fetchall()
-    return render_template("nuevoLayout.html", profesores=data)
+    return render_template("login.html", personas=data)
 
 
 @app.route("/inicio")
@@ -51,9 +51,9 @@ def inicio():
     """
 
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM profesores")
+    cur.execute("SELECT * FROM personas")
     data = cur.fetchall()
-    return render_template("registrarProfesores.html", profesores=data)
+    return render_template("registrarPersonas.html", personas=data)
 
 
 @app.route("/seguimiento")
@@ -89,13 +89,9 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-        contra = request.form["password"]
-
-        admin = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM profesores WHERE email=%s", (email,))
-        admin.execute("SELECT * FROM admins WHERE email=%s", (email,))
-        usuario = admin.fetchone()
+        curl.execute("SELECT * FROM personas WHERE email=%s", (email,))
         user = curl.fetchone()
         print(str(password))
 
@@ -103,19 +99,20 @@ def login():
         if len(user) > 0:
             if str(user["contraseña"]) == str(password):
 
-                return render_template("nuevoLayout.html")
+                    if user["rol"] == "administrador":
+
+                       return render_template("nuevoLayout.html")
+                    else:
+                       return render_template("layoutProfesor.html")
+                    
             else:
                 return "Error password and email not match"
         else:
             return "Error user not found"
-        if len(usuario) > 0:
-            if str(usuario["password"]) == str(contra):
-
-                return render_template("nuevoLayout.html")
+        
     else:
         return render_template("login.html")
 
-    return render_template("layoutAdmin.html")
 
 
 @app.route("/add_seguimiento", methods=["POST"])
@@ -156,11 +153,12 @@ def add_profesor():
         email = request.form["Email"]
         programa = request.form["Programa"]
         contraseña = request.form["Contraseña"]
+        rol= request.form["Rol"]
 
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO profesores (Nombre,Apellido,Cedula,Email,Programa,Contraseña) VALUES (%s, %s, %s,%s, %s, %s)",
-            (nombre, apellido, cedula, email, programa, contraseña),
+            "INSERT INTO personas (Nombre,Apellido,Cedula,Email,Programa,Contraseña,Rol) VALUES (%s, %s, %s,%s, %s, %s, %s)",
+            (nombre, apellido, cedula, email, programa, contraseña,rol),
         )
         mysql.connection.commit()
         flash("Profesor Agregado")
@@ -170,15 +168,12 @@ def add_profesor():
 
 @app.route("/edit/<cedula>")
 def get_contact(cedula):
-    """
-    Método que permite ingresar a la página de editar profesores
-    """
-
+    
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM profesores WHERE cedula = %s", {cedula})
+    cur.execute("SELECT * FROM personas WHERE cedula = {0}".format(cedula))
     data = cur.fetchall()
     print(data)
-    return render_template("editar_profesor.html", profesor=data[0])
+    return render_template("editar_persona.html", persona=data[0])
 
 
 @app.route("/update/<string:cedula>", methods=["POST"])
@@ -192,23 +187,24 @@ def update_profesor(cedula):
         email = request.form["email"]
         programa = request.form["programa"]
         contraseña = request.form["contraseña"]
+        rol= request.form["rol"]
         cur = mysql.connection.cursor()
         cur.execute(
             """
-            UPDATE profesores
+            UPDATE personas
             SET nombre = %s,
                 apellido = %s,
                 email = %s,
                 programa = %s,
-                contraseña = %s
-
-            WHERE cedula = %s
-          """,
-            (nombre, apellido, cedula, email, programa, contraseña),
+                contraseña = %s,
+                rol= %s
+                WHERE cedula = %s
+                """,
+            (nombre, apellido, email, programa, rol, contraseña,cedula),
         )
         cur.connection.commit()
         flash("actualizado")
-        return redirect(url_for("index"))
+        return redirect(url_for("inicio"))
 
 
 @app.route("/delete/<string:cedula>")
@@ -217,7 +213,7 @@ def delete_profesor(cedula):
     Método que permite eliminar un profesor de la plataforma
     """
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM profesores WHERE cedula=  %(Cedula)s", {"Cedula": cedula})
+    cur.execute("DELETE FROM personas WHERE cedula=  %(Cedula)s", {"Cedula": cedula})
     mysql.connection.commit()
     return redirect(url_for("index"))
 
@@ -227,7 +223,10 @@ def Busqueda():
     """
     Método que permite ingresar a la página de buscar profesores
     """
-    return render_template("buscarprofesor.html")
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM personas")
+    data = cur.fetchall()
+    return render_template("buscarpersona.html", persona=data)
 
 
 @app.route("/Buscar", methods=["POST"])
@@ -236,11 +235,11 @@ def Buscar():
         busqueda = request.form["busqueda"]
         cur = mysql.connection.cursor()
         cur.execute(
-            "SELECT * FROM profesores WHERE cedula = %(cedula)s", {"cedula": busqueda}
+            "SELECT * FROM personas WHERE cedula = %(cedula)s", {"cedula": busqueda}
         )
         data = cur.fetchall()
         print(data)
-        return render_template("buscarprofesor.html", profesores=data)
+        return render_template("buscarpersona.html", personas=data)
 
 
 # --------------------------------END Profesores--------------------------------
@@ -273,7 +272,6 @@ def inicioEquipos():
     return render_template("registrarEquipo.html", equipos=data)
 
 
-# Este metodo me permite buscar un equipo deseado
 @app.route("/buscarEquipos")
 def buscarEquipos():
     cur = mysql.connection.cursor()
@@ -282,7 +280,6 @@ def buscarEquipos():
     return render_template("buscarEquipo.html", equipo=data)
 
 
-# Este metodo me permite registrar un equipo
 @app.route("/add_equipo", methods=["POST"])
 def add_equipo():
     """
@@ -297,7 +294,7 @@ def add_equipo():
         cur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO equipos (nombre,facultad,estadoActual,disponibilidad) VALUES (%s,%s, %s,%s)",
-            (nombre, facultad, estadoActual, disponibilidad),
+            (nombre, facultad, estadoActual,disponibilidad),
         )
         mysql.connection.commit()
         flash("Equipo Agregado")
@@ -305,7 +302,6 @@ def add_equipo():
         return redirect(url_for("inicioEquipos"))
 
 
-# Este metodo me permite eliminar un equipo
 @app.route("/deleteEquipo/<string:id>")
 def delete_equipo(id):
     """
@@ -318,7 +314,6 @@ def delete_equipo(id):
     return redirect(url_for("inicioEquipos"))
 
 
-# Este metodo me permite buscar un equipo para editarlo
 @app.route("/editarEquipo/<id>")
 def editar_equipo(id):
     """
@@ -330,7 +325,6 @@ def editar_equipo(id):
     return render_template("editarEquipo.html", equipo=data[0])
 
 
-# Este metodo me permite modificar y actualizar todos los datos necesarios
 @app.route("/updateEquipo/<id>", methods=["POST"])
 def updateEquipo(id):
     if request.method == "POST":
@@ -345,27 +339,16 @@ def updateEquipo(id):
         SET nombre = %s,
           facultad = %s,
           estadoActual = %s,
-          disponibilidad = %s
-
-        WHERE id = %s
+          disponibilidad=%s
+          WHERE id = %s
       """,
-            (nombre, facultad, estadoActual, disponibilidad, id),
+            (nombre, facultad, estadoActual, disponibilidad, id)
         )
         mysql.connection.commit()
         flash("equipo actualizado satisfactoriamente")
         return redirect(url_for("inicioEquipos"))
 
 
-@app.route("/listarEquipos")
-def listarEquipos():
-    """
-    Método que permite listar los equipos de la plataforma
-    """
-
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM equipos")
-    data = cur.fetchall()
-    return render_template("listarEquipos.html", equipo=data)
 # --------------------------------END Equipos--------------------------------
 
 # --------------------------------START Prestamos--------------------------------
@@ -409,18 +392,26 @@ def add_prestamo():
         salon = request.form["salon"]
         horario = request.form["horario"]
         fecha = request.form["fecha"]
-        # disponibilidad = request.form["estado"]
+        disponibilidad = request.form["disponibilidad"]
         fechaS = time.strftime("%A %B, %d %Y %H:%M:%S")
         fechaSolicitud = str(fechaS)
         # estado = request.form['estado']
 
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s)",
-            (idEquipo, cedulaProfesor, salon, horario, fecha, fechaSolicitud),
+            "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,estado,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            (
+                idEquipo,
+                cedulaProfesor,
+                salon,
+                horario,
+                fecha,
+                disponibilidad,
+                fechaSolicitud,
+            ),
         )
         mysql.connection.commit()
-        flash("Prestamo Agregado :')")
+        flash("Prestamo Agregado")
 
         return redirect(url_for("prestamos"))
 
@@ -470,7 +461,15 @@ def update_prestamo(idPrestamo):
 
             WHERE idPrestamo = %s
           """,
-            (idEquipo, cedulaProfesor, salon, horario, fecha, estado, idPrestamo),
+            (
+                idEquipo,
+                cedulaProfesor,
+                salon,
+                horario,
+                fecha,
+                estado,
+                idPrestamo,
+            ),
         )
         cur.connection.commit()
         flash("Prestamo actualizado :d")

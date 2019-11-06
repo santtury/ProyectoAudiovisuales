@@ -1,4 +1,3 @@
-<!-- Este html me permite manejar la informacion de los equipos -->
 {% extends 'nuevoLayout.html' %}
 {% block body %}
 
@@ -9,11 +8,11 @@
 {%if messages %}
 {% for message in messages %}
 <div class="alert alert-warning alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <h4 class="alert-heading">Well done!</h4>
-    <p>{{message}}</p>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="alert-heading">Well done!</h4>
+        <p>{{message}}</p>
 </div>
 
 {% endfor %}
@@ -24,7 +23,7 @@
 </br>
 
 <div class="container">
-
+    
 
     <div class="row">
 
@@ -34,8 +33,8 @@
 
             <form action="/add_equipo" method="POST">
 
-
-
+               
+                                 
                 <div class="form-group">
 
 
@@ -71,6 +70,16 @@
 
                 </div>
 
+                <div class="form-group">
+
+
+                    <label>Disponibilidad:</label>
+
+
+                    <input type="text" class="form-control" name="disponibilidad">
+
+
+                </div>
                 
 
                 <div class="form-group">
@@ -80,7 +89,7 @@
 
 
                 </div>
-
+    
 
         </div>
 
@@ -90,38 +99,35 @@
 
 </div>
 
-
-<!-- se crea los campos en la tabla para los datos de los equipos -->
 <table class="table table-striped">
     <thead>
-        <tr>
-            <th scope="col">Id equipo</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Facultad</th>
-            <th scope="col">Estado Actual</th>
-            <th scope="col">Disponibilidad</th>
+            <tr>
+                    <th scope="col">Id equipo</th>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Facultad</th>
+                    <th scope="col">Estado Actual</th>
+                    <th scope="col">Disponibilidad</th>
 
-
-        </tr>
+                    
+            </tr>
     </thead>
     <tbody>
-        <!-- se optienen los datos para poder editar y eliminar un equipo -->
-        {% for equipo in equipos  %}
-        <tr>
-            <th scope="row">{{equipo.0}}</th>
-            <td>{{equipo.1}}</td>
-            <td>{{equipo.2}}</td>
-            <td>{{equipo.3}}</td>
-            <td>{{equipo.4}}</td>
+
+            {% for equipo in equipos  %}
+            <tr>
+                    <th scope="row">{{equipo.0}}</th>
+                    <td>{{equipo.1}}</td>
+                    <td>{{equipo.2}}</td>
+                    <td>{{equipo.3}}</td>
+                    <td>{{equipo.4}}</td>
 
 
-            <td>
-                <!-- se optiene el id para poder editar y eliminar por medio de los botones -->
-                <a href="/editarEquipo/{{equipo.0}}">Editar</a>
-                <a href="/deleteEquipo/{{equipo.0}}">Eliminar</a>
-            </td>
-        </tr>
-        {% endfor %}
+                    <td>
+                            <a href="/editarEquipo/{{equipo.0}}">Editar</a>
+                            <a href="/deleteEquipo/{{equipo.0}}">Eliminar</a>
+                    </td>
+            </tr>
+            {% endfor %}
     </tbody>
 </table>
 

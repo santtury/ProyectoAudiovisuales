@@ -1,0 +1,44 @@
+{% extends 'nuevoLayout.html' %}
+
+{% block title %} Busqueda {% endblock %}
+
+
+{% block body %}
+
+<br>
+<form action="/Buscar" method="POST">
+    <input type="text" name="busqueda" placeholder="Busqueda">
+    <button type="submit">Buscar</button>
+</form>
+
+<table class="table table-striped">
+    <thead>
+            <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Apellido</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Programa</th>
+                    <th scope="col">Rol</th>
+
+            </tr>
+    </thead>
+    <tbody>
+
+            {% for persona in personas  %}
+            <tr>
+                    <th scope="row">{{persona.0}}</th>
+                    <td>{{persona.1}}</td>
+                    <td>{{persona.3}}</td>
+                    <td>{{persona.4}}</td>
+                    <td>{{persona.6}}</td>
+
+                    <td>
+                            <a href="/edit/{{persona.2}}">Editar</a>
+                            <a href="/delete/{{persona.2}}">Eliminar</a>
+                    </td>
+            </tr>
+            {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
