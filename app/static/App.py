@@ -520,6 +520,41 @@ def peticiones():
     data = cur.fetchall()
     return render_template("registrarPeticion.html", peticiones=data)
 
+
+@app.route("/add_peticion", methods=["POST"])
+def add_peticion():
+    """
+    Método que permite enviar una petición en la plataforma
+    """
+
+    if request.method == "POST":
+
+
+        #idPeticion = request.form["idPeticion"]
+        idPrestamo = request.form['idPrestamo']
+        cedulaProfesor = request.form["cedulaProfesor"]
+        solicitud = request.form["solicitud"]
+        comentario = request.form["comentario"]
+        fechaP = time.strftime("%A %B, %d %Y %H:%M:%S")
+        fechaPeticion = str(fechaP)
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            "INSERT INTO peticiones (idPrestamo,cedulaProfesor,solicitud,comentario,fechaPeticion) VALUES (%s, %s, %s, %s, %s)",
+            (
+                idPrestamo,
+                cedulaProfesor,
+                solicitud,
+                comentario,
+                fechaPeticion,
+            ),
+        )
+        mysql.connection.commit()
+        flash("Petición enviada")
+
+        return redirect(url_for("peticiones"))
+        
+    
 if __name__ == "__main__":
     app.run(port=3000, debug=True)
 

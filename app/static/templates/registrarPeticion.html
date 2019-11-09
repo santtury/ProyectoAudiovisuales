@@ -1,4 +1,4 @@
-{% extends 'nuevoLayout.html' %}
+{% extends 'layoutProfesor.html' %}
 {% block body %}
 
 
@@ -100,10 +100,12 @@
 <table class="table table-striped">
     <thead>
         <tr>
+            <th scope="col">Id Petición</th>
             <th scope="col">Id Préstamo</th>
             <th scope="col">Cédula</th>
             <th scope="col">Solicitud</th>
             <th scope="col">Comentario</th>
+            <th scope="col">Fecha petición</th>
         </tr>
     </thead>
     <tbody>
@@ -115,6 +117,7 @@
             <td>{{peticion.2}}</td>
             <td>{{peticion.3}}</td>
             <td>{{peticion.4}}</td>
+            <td>{{peticion.5}}</td>
 
             <td>
                 <a href="/editarPeticion/{{peticion.0}}">Editar</a>
