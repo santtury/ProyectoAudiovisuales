@@ -1,7 +1,7 @@
 {% extends 'nuevoLayout.html' %}
 {% block body %}
 
-<form action="/update/{{ profesor.0 }}" method="POST">
+<form action="/update/{{profesor.0}}" method="POST">
     <input type="text" name="nombre" placeholder="nombre" value="{{ profesor.0}}">
     <input type="text" name="apellido" placeholder="apellido" value="{{ profesor.1}}">
     <input type="text" name="email" placeholder="email" value="{{ profesor.3}}">

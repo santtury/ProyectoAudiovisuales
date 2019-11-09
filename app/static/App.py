@@ -204,7 +204,7 @@ def update_profesor(cedula):
 
             WHERE cedula = %s
           """,
-            (nombre, apellido, cedula, email, programa, contraseña),
+            (nombre, apellido,  email, programa, contraseña, cedula)
         )
         cur.connection.commit()
         flash("actualizado")
@@ -294,7 +294,7 @@ def add_equipo():
         disponibilidad = request.form["disponibilidad"]
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO equipos (nombre,facultad,estadoActual,disponibilidad) VALUES (%s,%s, %s,%s)",
+            "INSERT INTO equipos (nombre,facultad,estadoActual,disponibilidad) VALUES (%s,%s,%s,%s)",
             (nombre, facultad, estadoActual,disponibilidad),
         )
         mysql.connection.commit()
