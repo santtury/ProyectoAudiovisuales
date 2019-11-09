@@ -200,11 +200,11 @@ def update_profesor(cedula):
                 apellido = %s,
                 email = %s,
                 programa = %s,
-                contraseña = %s
-
-            WHERE cedula = %s
-          """,
-            (nombre, apellido,  email, programa, contraseña, cedula)
+                contraseña = %s,
+                rol= %s
+                WHERE cedula = %s
+                """,
+            (nombre, apellido, email, programa, rol, contraseña,cedula),
         )
         cur.connection.commit()
         flash("actualizado")
@@ -401,23 +401,18 @@ def add_prestamo():
         #estado = request.form['estado']
         fechaS = time.strftime("%A %B, %d %Y %H:%M:%S")
         fechaSolicitud = str(fechaS)
-<<<<<<< HEAD
-        # estado = request.form['estado']
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM personas WHERE cedula=%s", (cedulaProfesor,))
         user = curl.fetchone()
+        uq = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        uq.execute("SELECT * FROM equipos WHERE id=%s", (idEquipo,))
+        eq = uq.fetchone()
 
-        if not user is None:   
-
+        if (not user is None) and (not eq is None):   
+            
             cur = mysql.connection.cursor()
             cur.execute(
-            "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,estado,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-=======
-
-        cur = mysql.connection.cursor()
-        cur.execute(
             "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s)",
->>>>>>> 5a192b8006d221c92c86aea27e22b882b3bbf17a
             (
                 idEquipo,
                 cedulaProfesor,
@@ -426,18 +421,11 @@ def add_prestamo():
                 fecha,
                 #estado,
                 fechaSolicitud,
-<<<<<<< HEAD
              ),
                     )
             mysql.connection.commit()
             flash("Prestamo Agregado")
-=======
-            ),
-        )
-        mysql.connection.commit()
-        flash("Prestamo agregadisimo")
->>>>>>> 5a192b8006d221c92c86aea27e22b882b3bbf17a
-
+        
             return redirect(url_for("prestamos"))
         else:
             
