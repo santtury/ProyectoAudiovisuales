@@ -404,10 +404,11 @@ def add_prestamo():
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM personas WHERE cedula=%s", (cedulaProfesor,))
         user = curl.fetchone()
-        print(user["cedula"]+"consulta")
 
-        cur = mysql.connection.cursor()
-        cur.execute(
+        if not user is None:   
+
+            cur = mysql.connection.cursor()
+            cur.execute(
             "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,estado,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s, %s)",
             (
                 idEquipo,
@@ -417,12 +418,17 @@ def add_prestamo():
                 fecha,
                 disponibilidad,
                 fechaSolicitud,
-            ),
-        )
-        mysql.connection.commit()
-        flash("Prestamo Agregado")
+             ),
+                    )
+            mysql.connection.commit()
+            flash("Prestamo Agregado")
 
-        return redirect(url_for("prestamos"))
+            return redirect(url_for("prestamos"))
+        else:
+            
+            flash("Prestamo No Agregado verifique que la informacion sea valida")
+
+            return redirect(url_for("prestamos"))
 
 
 @app.route("/deletePrestamo/<string:idPrestamo>")
