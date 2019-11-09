@@ -390,6 +390,7 @@ def add_prestamo():
 
     if request.method == "POST":
 
+
         # idPrestamo = request.form['idPrestamo']
         idEquipo = request.form["idEquipo"]
         cedulaProfesor = request.form["cedulaProfesor"]
@@ -400,6 +401,10 @@ def add_prestamo():
         fechaS = time.strftime("%A %B, %d %Y %H:%M:%S")
         fechaSolicitud = str(fechaS)
         # estado = request.form['estado']
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM personas WHERE cedula=%s", (cedulaProfesor,))
+        user = curl.fetchone()
+        print(user["cedula"]+"consulta")
 
         cur = mysql.connection.cursor()
         cur.execute(
