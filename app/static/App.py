@@ -505,6 +505,21 @@ def BuscarPrestamo():
 
 # --------------------------------END Prestamos--------------------------------
 
+
+# --------------------------------START Peticiones--------------------------------
+
+
+@app.route("/peticiones")
+def peticiones():
+    """
+    Método que permite ingresar a la página de hacer peticiones
+    """
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM peticiones")
+    data = cur.fetchall()
+    return render_template("registrarPeticion.html", peticiones=data)
+
 if __name__ == "__main__":
     app.run(port=3000, debug=True)
 
