@@ -200,11 +200,11 @@ def update_profesor(cedula):
                 apellido = %s,
                 email = %s,
                 programa = %s,
-                contraseña = %s,
-                rol= %s
-                WHERE cedula = %s
-                """,
-            (nombre, apellido, email, programa, rol, contraseña,cedula),
+                contraseña = %s
+
+            WHERE cedula = %s
+          """,
+            (nombre, apellido,  email, programa, contraseña, cedula)
         )
         cur.connection.commit()
         flash("actualizado")
@@ -297,7 +297,7 @@ def add_equipo():
         disponibilidad = request.form["disponibilidad"]
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO equipos (nombre,facultad,estadoActual,disponibilidad) VALUES (%s,%s, %s,%s)",
+            "INSERT INTO equipos (nombre,facultad,estadoActual,disponibilidad) VALUES (%s,%s,%s,%s)",
             (nombre, facultad, estadoActual,disponibilidad),
         )
         mysql.connection.commit()
@@ -397,9 +397,11 @@ def add_prestamo():
         salon = request.form["salon"]
         horario = request.form["horario"]
         fecha = request.form["fecha"]
-        disponibilidad = request.form["disponibilidad"]
+        #disponibilidad = request.form["disponibilidad"]
+        #estado = request.form['estado']
         fechaS = time.strftime("%A %B, %d %Y %H:%M:%S")
         fechaSolicitud = str(fechaS)
+<<<<<<< HEAD
         # estado = request.form['estado']
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM personas WHERE cedula=%s", (cedulaProfesor,))
@@ -410,18 +412,31 @@ def add_prestamo():
             cur = mysql.connection.cursor()
             cur.execute(
             "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,estado,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+=======
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s)",
+>>>>>>> 5a192b8006d221c92c86aea27e22b882b3bbf17a
             (
                 idEquipo,
                 cedulaProfesor,
                 salon,
                 horario,
                 fecha,
-                disponibilidad,
+                #estado,
                 fechaSolicitud,
+<<<<<<< HEAD
              ),
                     )
             mysql.connection.commit()
             flash("Prestamo Agregado")
+=======
+            ),
+        )
+        mysql.connection.commit()
+        flash("Prestamo agregadisimo")
+>>>>>>> 5a192b8006d221c92c86aea27e22b882b3bbf17a
 
             return redirect(url_for("prestamos"))
         else:
@@ -515,6 +530,56 @@ def BuscarPrestamo():
 
 # --------------------------------END Prestamos--------------------------------
 
+
+# --------------------------------START Peticiones--------------------------------
+
+
+@app.route("/peticiones")
+def peticiones():
+    """
+    Método que permite ingresar a la página de hacer peticiones
+    """
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM peticiones")
+    data = cur.fetchall()
+    return render_template("registrarPeticion.html", peticiones=data)
+
+
+@app.route("/add_peticion", methods=["POST"])
+def add_peticion():
+    """
+    Método que permite enviar una petición en la plataforma
+    """
+
+    if request.method == "POST":
+
+
+        #idPeticion = request.form["idPeticion"]
+        idPrestamo = request.form['idPrestamo']
+        cedulaProfesor = request.form["cedulaProfesor"]
+        solicitud = request.form["solicitud"]
+        comentario = request.form["comentario"]
+        fechaP = time.strftime("%A %B, %d %Y %H:%M:%S")
+        fechaPeticion = str(fechaP)
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            "INSERT INTO peticiones (idPrestamo,cedulaProfesor,solicitud,comentario,fechaPeticion) VALUES (%s, %s, %s, %s, %s)",
+            (
+                idPrestamo,
+                cedulaProfesor,
+                solicitud,
+                comentario,
+                fechaPeticion,
+            ),
+        )
+        mysql.connection.commit()
+        flash("Petición enviada")
+
+        return redirect(url_for("peticiones"))
+        
+    
 if __name__ == "__main__":
     app.run(port=3000, debug=True)
 
