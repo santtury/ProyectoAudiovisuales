@@ -1,4 +1,3 @@
-<!-- Este html me permite manejar la informacion de los equipos -->
 {% extends 'nuevoLayout.html' %}
 {% block body %}
 
@@ -100,8 +99,6 @@
 
 </div>
 
-
-<!-- se crea los campos en la tabla para los datos de los equipos -->
 <table class="table table-striped">
     <thead>
             <tr>
@@ -115,7 +112,7 @@
             </tr>
     </thead>
     <tbody>
-<!-- se optienen los datos para poder editar y eliminar un equipo -->
+
             {% for equipo in equipos  %}
             <tr>
                     <th scope="row">{{equipo.0}}</th>
@@ -126,7 +123,6 @@
 
 
                     <td>
-                        <!-- se optiene el id para poder editar y eliminar por medio de los botones -->
                             <a href="/editarEquipo/{{equipo.0}}">Editar</a>
                             <a href="/deleteEquipo/{{equipo.0}}">Eliminar</a>
                     </td>
