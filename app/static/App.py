@@ -390,6 +390,7 @@ def add_prestamo():
 
     if request.method == "POST":
 
+
         # idPrestamo = request.form['idPrestamo']
         idEquipo = request.form["idEquipo"]
         cedulaProfesor = request.form["cedulaProfesor"]
