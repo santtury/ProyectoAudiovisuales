@@ -1,14 +1,12 @@
 {% extends 'nuevoLayout.html' %}
 {% block body %}
 
-<form action="/update/{{persona.2}}" method="POST">
-    <input type="text" name="nombre" placeholder="nombre" value="{{ persona.0}}">
-    <input type="text" name="apellido" placeholder="apellido" value="{{ persona.1}}">
-    <input type="text" name="email" placeholder="email" value="{{ persona.3}}">
-    <input type="text" name="programa" placeholder="programa" value="{{ persona.4}}">
-    <input type="text" name="contraseña" placeholder="contraseña" value="{{ persona.5}}">
-    <input type="text" name="rol" placeholder="rol" value="{{ persona.6}}">
-
+<form action="/update/{{profesor.0}}" method="POST">
+    <input type="text" name="nombre" placeholder="nombre" value="{{ profesor.0}}">
+    <input type="text" name="apellido" placeholder="apellido" value="{{ profesor.1}}">
+    <input type="text" name="email" placeholder="email" value="{{ profesor.3}}">
+    <input type="text" name="programa" placeholder="programa" value="{{ profesor.4}}">
+    <input type="text" name="contraseña" placeholder="contraseña" value="{{ profesor.5}}">
 
     <button type="submit" class="btn btn-outline-secondary">Editar</button>
 </form>
