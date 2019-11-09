@@ -396,26 +396,26 @@ def add_prestamo():
         salon = request.form["salon"]
         horario = request.form["horario"]
         fecha = request.form["fecha"]
-        disponibilidad = request.form["disponibilidad"]
+        #disponibilidad = request.form["disponibilidad"]
+        #estado = request.form['estado']
         fechaS = time.strftime("%A %B, %d %Y %H:%M:%S")
         fechaSolicitud = str(fechaS)
-        # estado = request.form['estado']
 
         cur = mysql.connection.cursor()
         cur.execute(
-            "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,estado,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s)",
             (
                 idEquipo,
                 cedulaProfesor,
                 salon,
                 horario,
                 fecha,
-                disponibilidad,
+                #estado,
                 fechaSolicitud,
             ),
         )
         mysql.connection.commit()
-        flash("Prestamo Agregado")
+        flash("Prestamo agregadisimo")
 
         return redirect(url_for("prestamos"))
 
