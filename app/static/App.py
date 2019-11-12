@@ -14,6 +14,7 @@ app.config["MYSQL_PASSWORD"] = ""
 app.config["MYSQL_DB"] = "audiovisuales"
 
 
+
 mysql = MySQL(app)
 
 app.secret_key = "mysecretkey"
