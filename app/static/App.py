@@ -101,7 +101,7 @@ def login():
 
                     if user["rol"] == "administrador":
 
-                        return render_template("nuevoLayout.html")
+                        return render_template("layoutAdmin.html")
 
 
                     else:
@@ -535,7 +535,7 @@ def peticiones():
 
 
 @app.route("/listarPeticiones")
-def listarPeticones():
+def listarPeticiones():
     """
     Método que permite listar las peticiones enviadas
     """
@@ -581,7 +581,19 @@ def add_peticion():
 
         return redirect(url_for("peticiones"))
         
-    
+
+@app.route("/deletePeticion/<string:idPeticion>")
+def delete_peticion(idPeticion):
+    """
+    Método que permite eliminar una peticion de la plataforma
+    """
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM peticiones WHERE idPeticion= {0}".format(idPeticion))
+    mysql.connection.commit()
+    flash("Peticion eliminada :.v")
+    return redirect(url_for("listarPeticiones"))    
+
+  
 if __name__ == "__main__":
     app.run(port=3000, debug=True)
 
