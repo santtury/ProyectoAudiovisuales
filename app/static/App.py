@@ -102,7 +102,7 @@ def login():
 
                     if user["rol"] == "administrador":
 
-                        return render_template("nuevoLayout.html")
+                        return render_template("layoutAdmin.html")
 
 
                     else:
@@ -131,16 +131,33 @@ def add_seguimiento():
         profesor = request.form["Profesor"]
         prestamo = request.form["Prestamo"]
         calificacion = request.form["Calificacion"]
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM personas WHERE cedula=%s", (profesor,))
+        user=curl.fetchone()
+        uq= mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        uq.execute("SELECT * FROM prestamos WHERE idPrestamo=%s", (prestamo,))
+        eq=uq.fetchone()
+        print(eq)
+        print(user)
+        
 
-        cur = mysql.connection.cursor()
-        cur.execute(
+        if (not user is None) and (not eq is None):   
+
+            cur = mysql.connection.cursor()
+            cur.execute(
             "INSERT INTO seguimiento (Idseguimiento,Profesor,Prestamo,Calificacion) VALUES (%s, %s, %s,%s)",
             (idseguimiento, profesor, prestamo, calificacion),
-        )
-        mysql.connection.commit()
-        flash("Seguimeitno Agregado")
+                 )
+            mysql.connection.commit()
+            flash("Seguimeitno Agregado")
 
-        return redirect(url_for("index"))
+            return redirect(url_for("seguimiento"))
+
+        else:
+                flash("Prestamo No Agregado verifique que la informacion sea valida")
+
+                return redirect(url_for("seguimiento"))
+    
 
 
 # --------------------------------START Profesores--------------------------------
