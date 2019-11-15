@@ -581,23 +581,36 @@ def add_peticion():
         estado="En proceso"
         fechaP = time.strftime("%A %B, %d %Y %H:%M:%S")
         fechaPeticion = str(fechaP)
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM personas WHERE cedula=%s", (cedulaProfesor,))
+        user=curl.fetchone()
+        uq = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        uq.execute("SELECT * FROM prestamos WHERE idPrestamo=%s", (idPrestamo,))
+        eq = uq.fetchone()
 
-        cur = mysql.connection.cursor()
-        cur.execute(
-            "INSERT INTO peticiones (idPrestamo,cedulaProfesor,solicitud,comentario,estado,fechaPeticion) VALUES (%s, %s, %s, %s, %s, %s)",
-            (
+        if (not user is None) and (not eq is None):   
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "INSERT INTO peticiones (idPrestamo,cedulaProfesor,solicitud,comentario,estado,fechaPeticion) VALUES (%s, %s, %s, %s, %s, %s)",
+                (
                 idPrestamo,
                 cedulaProfesor,
                 solicitud,
                 comentario,
                 estado,
                 fechaPeticion,
-            ),
-        )
-        mysql.connection.commit()
-        flash("Petición enviada")
+                ),
+            )
+            mysql.connection.commit()
+            flash("Petición enviada")
 
-        return redirect(url_for("peticiones"))
+            return redirect(url_for("peticiones"))
+        else: 
+
+            flash("Prestamo No Agregado verifique que la informacion sea valida")
+
+            return redirect(url_for("peticiones"))
+
         
     
 if __name__ == "__main__":
