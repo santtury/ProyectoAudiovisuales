@@ -129,7 +129,7 @@ def add_profesor():
         mysql.connection.commit()
         flash("Profesor Agregado")
 
-        return redirect(url_for("index"))
+        return redirect(url_for("inicio"))
 
 
 @app.route("/edit/<cedula>")
@@ -181,7 +181,7 @@ def delete_profesor(cedula):
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM personas WHERE cedula=  %(Cedula)s", {"Cedula": cedula})
     mysql.connection.commit()
-    return redirect(url_for("index"))
+    return redirect(url_for("inicio"))
 
 
 @app.route("/Busqueda")
@@ -212,8 +212,12 @@ def Buscar():
 
 # --------------------------------START Equipos--------------------------------
 
+
 @app.route("/listarEquipos", methods=["POST"])
 def listarEquipos():
+    """
+    Método que permite listar los equipos para los profesores
+    """
     if request.method == "POST":
         busquedaEquipo = request.form["busquedaEquipo"]
         cur = mysql.connection.cursor()
@@ -228,6 +232,9 @@ def listarEquipos():
 
 @app.route("/listadoEquipos")
 def listadoEquipos():
+    """
+    Método que permite ingresar a la pagina para que los profesores puedan ver los equipos
+    """
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM equipos")
     data = cur.fetchall()
@@ -236,6 +243,9 @@ def listadoEquipos():
 
 @app.route("/BuscarEquipo", methods=["POST"])
 def BuscarEquipo():
+    """
+    Método que permite hacer el inventari de los equipos por parte del administrador
+    """
     if request.method == "POST":
         busquedaEquipo = request.form["busquedaEquipo"]
         cur = mysql.connection.cursor()
@@ -248,6 +258,17 @@ def BuscarEquipo():
         return render_template("buscarEquipo.html", equipos=data)
 
 
+@app.route("/buscarEquipos")
+def buscarEquipos():
+    """
+    Método que permite ingresar a la pagina para que el administrador puedan ver el inventario de equipos
+    """
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM equipos")
+    data = cur.fetchall()
+    return render_template("buscarEquipo.html", equipos=data)
+
+
 @app.route("/inicioEquipos")
 def inicioEquipos():
     """
@@ -257,14 +278,6 @@ def inicioEquipos():
     cur.execute("SELECT * FROM equipos")
     data = cur.fetchall()
     return render_template("registrarEquipo.html", equipos=data)
-
-
-@app.route("/buscarEquipos")
-def buscarEquipos():
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM equipos")
-    data = cur.fetchall()
-    return render_template("buscarEquipo.html", equipos=data)
 
 
 @app.route("/add_equipo", methods=["POST"])
@@ -298,7 +311,7 @@ def delete_equipo(id):
     cur.execute("DELETE FROM equipos WHERE id= {0}".format(id))
     mysql.connection.commit()
     flash("Equipo eliminado")
-    return redirect(url_for("inicioEquipos"))
+    return redirect(url_for("buscarEquipos"))
 
 
 @app.route("/editarEquipo/<id>")
@@ -333,7 +346,7 @@ def updateEquipo(id):
         )
         mysql.connection.commit()
         flash("equipo actualizado satisfactoriamente")
-        return redirect(url_for("inicioEquipos"))
+        return redirect(url_for("buscarEquipos"))
 
 
 # --------------------------------END Equipos--------------------------------
