@@ -38,7 +38,7 @@
                 <div class="form-group">
 
 
-                    <label>Idseguimiento:</label>
+                    <label>Id Seguimiento:</label>
 
 
                     <input type="text" class="form-control" name="Idseguimiento">
@@ -50,7 +50,7 @@
                 <div class="form-group">
 
 
-                    <label>Profesor:</label>
+                    <label>Cédula Profesor:</label>
 
 
                     <input type="text" class="form-control" name="Profesor">
@@ -62,7 +62,7 @@
                 <div class="form-group">
 
 
-                    <label>Prestamo:</label>
+                    <label>Id Préstamo:</label>
 
 
                     <input type="text" class="form-control" name="Prestamo">
@@ -74,7 +74,7 @@
                 <div class="form-group">
 
 
-                    <label>Calificacion:</label>
+                    <label>Calificación:</label>
 
 
                     <input type="text" class="form-control" name="Calificacion">
@@ -87,7 +87,7 @@
                 <div class="form-group">
 
 
-                    <button class="btn btn-primary">Registrar</button>
+                    <button class="btn btn-primary">Calificar</button>
 
 
                 </div>
@@ -104,6 +104,39 @@
 
 </div>
 
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Id Préstamo</th>
+            <th scope="col">Id Equipo</th>
+            <th scope="col">Cédula Profesor</th>
+            <th scope="col">Salón</th>
+            <th scope="col">Horario</th>
+            <th scope="col">Fecha</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Fecha de solicitud</th>
+        </tr>
+    </thead>
+    <tbody>
 
+        {% for prestamo in prestamos  %}
+        <tr>
+            <th scope="row">{{prestamo.0}}</th>
+            <td>{{prestamo.1}}</td>
+            <td>{{prestamo.2}}</td>
+            <td>{{prestamo.3}}</td>
+            <td>{{prestamo.4}}</td>
+            <td>{{prestamo.5}}</td>
+            <td>{{prestamo.6}}</td>
+            <td>{{prestamo.7}}</td>
+
+            <td>
+                <a href="/editarPrestamo/{{prestamo.0}}">Editar</a>
+                <a href="/deletePrestamo/{{prestamo.0}}">Eliminar</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 {% endblock %}

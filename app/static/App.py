@@ -299,7 +299,7 @@ def buscarEquipos():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM equipos")
     data = cur.fetchall()
-    return render_template("buscarEquipo.html", equipo=data)
+    return render_template("buscarEquipo.html", equipos=data)
 
 
 @app.route("/add_equipo", methods=["POST"])
