@@ -1,0 +1,47 @@
+{% extends 'layoutAdmin.html' %}
+{% block body %}
+
+
+
+
+{% with messages = get_flashed_messages() %}
+{%if messages %}
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="alert-heading">Well done!</h4>
+    <p>{{message}}</p>
+</div>
+
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+</br>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Id Seguimiento</th>
+            <th scope="col">Id Préstamo</th>
+            <th scope="col">Cédula Profesor</th>
+            <th scope="col">Calificación</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for seguimiento in seguimientos  %}
+        <tr>
+            <th scope="row">{{seguimiento.0}}</th>
+            <td>{{seguimiento.1}}</td>
+            <td>{{seguimiento.2}}</td>
+            <td>{{seguimiento.3}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

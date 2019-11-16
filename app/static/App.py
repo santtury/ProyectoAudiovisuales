@@ -683,6 +683,60 @@ def add_calificacion():
 
 # --------------------------------END Calificacion--------------------------------
 
+
+# --------------------------------START Seguimiento--------------------------------
+
+
+@app.route("/seguimientos")
+def seguimientos():
+    """
+    Método que permite ingresar a la página de calificar el servicio
+    """
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM seguimientos")
+    data = cur.fetchall()
+    return render_template("registrarSeguimiento.html", seguimientos=data)
+
+
+@app.route("/listarSeguimientos")
+def listarSeguimientos():
+    """
+    Método que permite listar las calificaciones de los servicios
+    """
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM seguimientos")
+    data = cur.fetchall()
+    return render_template("listarSeguimientos.html", seguimientos=data)
+
+
+@app.route("/add_seguimientos", methods=["POST"])
+def add_seguimientos():
+    """
+    Método que permite calificar un servicio en la plataforma
+    """
+
+    if request.method == "POST":
+
+        # idCalificacion = request.form["idCalificacion"]
+        idPrestamo = request.form["idPrestamo"]
+        cedulaProfesor = request.form["cedulaProfesor"]
+        calificacion = request.form["calificacion"]
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            "INSERT INTO seguimientos (idPrestamo,cedulaProfesor,calificacion) VALUES (%s, %s, %s)",
+            (idPrestamo, cedulaProfesor, calificacion),
+        )
+        mysql.connection.commit()
+        flash("Profesor calificado")
+
+        return redirect(url_for("seguimientos"))
+
+
+# --------------------------------END Seguimiento--------------------------------
+
 if __name__ == "__main__":
     app.run(port=3000, debug=True)
 
