@@ -56,18 +56,6 @@ def inicio():
     return render_template("registrarPersonas.html", personas=data)
 
 
-@app.route("/seguimiento")
-def seguimiento():
-    """
-    Método que permite ingresar a la página del seguimiento del profesor
-    """
-
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM seguimiento")
-    data = cur.fetchall()
-    return render_template("seguimientoProfesor.html", seguimientos=data)
-
-
 @app.route("/getTime", methods=["GET"])
 def getTime():
     """
@@ -114,44 +102,6 @@ def login():
 
     else:
         return render_template("login.html")
-
-
-@app.route("/add_seguimiento", methods=["POST"])
-def add_seguimiento():
-    """
-    Método que permite agregar un seguimiento del profesor
-    """
-
-    if request.method == "POST":
-        idseguimiento = request.form["Idseguimiento"]
-        profesor = request.form["Profesor"]
-        prestamo = request.form["Prestamo"]
-        calificacion = request.form["Calificacion"]
-        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        curl.execute("SELECT * FROM personas WHERE cedula=%s", (profesor,))
-        user = curl.fetchone()
-        uq = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-        uq.execute("SELECT * FROM prestamos WHERE idPrestamo=%s", (prestamo,))
-        eq = uq.fetchone()
-        print(eq)
-        print(user)
-
-        if (not user is None) and (not eq is None):
-
-            cur = mysql.connection.cursor()
-            cur.execute(
-                "INSERT INTO seguimiento (Idseguimiento,Profesor,Prestamo,Calificacion) VALUES (%s, %s, %s,%s)",
-                (idseguimiento, profesor, prestamo, calificacion),
-            )
-            mysql.connection.commit()
-            flash("Seguimeitno Agregado")
-
-            return redirect(url_for("seguimiento"))
-
-        else:
-            flash("Prestamo No Agregado verifique que la informacion sea valida")
-
-            return redirect(url_for("seguimiento"))
 
 
 # --------------------------------START Profesores--------------------------------
