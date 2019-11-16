@@ -1,60 +1,40 @@
-{% extends 'layoutAdmin.html' %}
+{% extends 'layoutProfesor.html' %}
+
+{% block title %} BusquedaEquipo {% endblock %}
+
+
 {% block body %}
 
+<br>
+<form action="/listarEquipos" method="POST">
+        <input type="text" name="busquedaEquipo" placeholder="Busqueda">
+        <button type="submit">Buscar</button>
+</form>
 
-
-
-{% with messages = get_flashed_messages() %}
-{%if messages %}
-{% for message in messages %}
-<div class="alert alert-warning alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    <h4 class="alert-heading">Well done!</h4>
-    <p>{{message}}</p>
-</div>
-
-{% endfor %}
-{% endif %}
-{% endwith %}
-
-
-</br>
-
-<!-- se crea los campos en la tabla para los datos de los equipos -->
 <table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">Id equipo</th>
-            <th scope="col">Nombre</th>
-            <th scope="col">Facultad</th>
-            <th scope="col">Estado Actual</th>
-            <th scope="col">Disponibilidad</th>
+        <thead>
+                <tr>
+                        <th scope="col">Id Equipo</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Facultad</th>
+                        <th scope="col">Estado Actual</th>
+                        <th scope="col">Disponibilidad</th>
 
+                </tr>
+        </thead>
+        <tbody>
 
-        </tr>
-    </thead>
-    <tbody>
-        <!-- se optienen los datos para poder editar y eliminar un equipo -->
-        {% for equipo in equipos  %}
-        <tr>
-            <th scope="row">{{equipo.0}}</th>
-            <td>{{equipo.1}}</td>
-            <td>{{equipo.2}}</td>
-            <td>{{equipo.3}}</td>
-            <td>{{equipo.4}}</td>
+                {% for equipo in equipos  %}
+                <tr>
+                        <th scope="row">{{equipo.0}}</th>
+                        <td>{{equipo.1}}</td>
+                        <td>{{equipo.2}}</td>
+                        <td>{{equipo.3}}</td>
+                        <td>{{equipo.4}}</td>
 
-
-            <td>
-                <!-- se optiene el id para poder editar y eliminar por medio de los botones -->
-                <a href="/editarEquipo/{{equipo.0}}">Editar</a>
-                <a href="/deleteEquipo/{{equipo.0}}">Eliminar</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
+                </tr>
+                {% endfor %}
+        </tbody>
 </table>
-
 
 {% endblock %}

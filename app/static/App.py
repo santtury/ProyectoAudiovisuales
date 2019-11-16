@@ -262,6 +262,27 @@ def Buscar():
 
 # --------------------------------START Equipos--------------------------------
 
+@app.route("/listarEquipos", methods=["POST"])
+def listarEquipos():
+    if request.method == "POST":
+        busquedaEquipo = request.form["busquedaEquipo"]
+        cur = mysql.connection.cursor()
+        cur.execute(
+            "SELECT * FROM equipos WHERE id = %(busca)s OR facultad = %(busca)s",
+            {"busca": busquedaEquipo},
+        )
+        data = cur.fetchall()
+        print(data)
+        return render_template("listarEquipos.html", equipos=data)
+
+
+@app.route("/listadoEquipos")
+def listadoEquipos():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM equipos")
+    data = cur.fetchall()
+    return render_template("listarEquipos.html", equipos=data)
+
 
 @app.route("/BuscarEquipo", methods=["POST"])
 def BuscarEquipo():
