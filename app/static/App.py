@@ -14,7 +14,6 @@ app.config["MYSQL_PASSWORD"] = ""
 app.config["MYSQL_DB"] = "audiovisuales"
 
 
-
 mysql = MySQL(app)
 
 app.secret_key = "mysecretkey"
@@ -90,7 +89,7 @@ def login():
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
-        
+
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM personas WHERE email=%s", (email,))
         user = curl.fetchone()
@@ -100,24 +99,21 @@ def login():
         if len(user) > 0:
             if str(user["contraseña"]) == str(password):
 
-                    if user["rol"] == "administrador":
+                if user["rol"] == "administrador":
 
-                        return render_template("layoutAdmin.html")
+                    return render_template("layoutAdmin.html")
 
+                else:
 
-                    else:
+                    return render_template("layoutProfesor.html")
 
-                        return render_template("layoutProfesor.html")
-
-                                       
             else:
                 return "Error password and email not match"
         else:
             return "Error user not found"
-        
+
     else:
         return render_template("login.html")
-
 
 
 @app.route("/add_seguimiento", methods=["POST"])
@@ -133,31 +129,29 @@ def add_seguimiento():
         calificacion = request.form["Calificacion"]
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM personas WHERE cedula=%s", (profesor,))
-        user=curl.fetchone()
-        uq= mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        user = curl.fetchone()
+        uq = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         uq.execute("SELECT * FROM prestamos WHERE idPrestamo=%s", (prestamo,))
-        eq=uq.fetchone()
+        eq = uq.fetchone()
         print(eq)
         print(user)
-        
 
-        if (not user is None) and (not eq is None):   
+        if (not user is None) and (not eq is None):
 
             cur = mysql.connection.cursor()
             cur.execute(
-            "INSERT INTO seguimiento (Idseguimiento,Profesor,Prestamo,Calificacion) VALUES (%s, %s, %s,%s)",
-            (idseguimiento, profesor, prestamo, calificacion),
-                 )
+                "INSERT INTO seguimiento (Idseguimiento,Profesor,Prestamo,Calificacion) VALUES (%s, %s, %s,%s)",
+                (idseguimiento, profesor, prestamo, calificacion),
+            )
             mysql.connection.commit()
             flash("Seguimeitno Agregado")
 
             return redirect(url_for("seguimiento"))
 
         else:
-                flash("Prestamo No Agregado verifique que la informacion sea valida")
+            flash("Prestamo No Agregado verifique que la informacion sea valida")
 
-                return redirect(url_for("seguimiento"))
-    
+            return redirect(url_for("seguimiento"))
 
 
 # --------------------------------START Profesores--------------------------------
@@ -175,12 +169,12 @@ def add_profesor():
         email = request.form["Email"]
         programa = request.form["Programa"]
         contraseña = request.form["Contraseña"]
-        rol= request.form["Rol"]
+        rol = request.form["Rol"]
 
         cur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO personas (Nombre,Apellido,Cedula,Email,Programa,Contraseña,Rol) VALUES (%s, %s, %s,%s, %s, %s, %s)",
-            (nombre, apellido, cedula, email, programa, contraseña,rol),
+            (nombre, apellido, cedula, email, programa, contraseña, rol),
         )
         mysql.connection.commit()
         flash("Profesor Agregado")
@@ -190,7 +184,7 @@ def add_profesor():
 
 @app.route("/edit/<cedula>")
 def get_contact(cedula):
-    
+
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM personas WHERE cedula = {0}".format(cedula))
     data = cur.fetchall()
@@ -209,7 +203,7 @@ def update_profesor(cedula):
         email = request.form["email"]
         programa = request.form["programa"]
         contraseña = request.form["contraseña"]
-        rol= request.form["rol"]
+        rol = request.form["rol"]
         cur = mysql.connection.cursor()
         cur.execute(
             """
@@ -222,7 +216,7 @@ def update_profesor(cedula):
                 rol= %s
                 WHERE cedula = %s
                 """,
-            (nombre, apellido, email, programa, rol, contraseña,cedula),
+            (nombre, apellido, email, programa, rol, contraseña, cedula),
         )
         cur.connection.commit()
         flash("actualizado")
@@ -316,7 +310,7 @@ def add_equipo():
         cur = mysql.connection.cursor()
         cur.execute(
             "INSERT INTO equipos (nombre,facultad,estadoActual,disponibilidad) VALUES (%s,%s,%s,%s)",
-            (nombre, facultad, estadoActual,disponibilidad),
+            (nombre, facultad, estadoActual, disponibilidad),
         )
         mysql.connection.commit()
         flash("Equipo Agregado")
@@ -364,7 +358,7 @@ def updateEquipo(id):
           disponibilidad=%s
           WHERE id = %s
       """,
-            (nombre, facultad, estadoActual, disponibilidad, id)
+            (nombre, facultad, estadoActual, disponibilidad, id),
         )
         mysql.connection.commit()
         flash("equipo actualizado satisfactoriamente")
@@ -408,15 +402,14 @@ def add_prestamo():
 
     if request.method == "POST":
 
-
         # idPrestamo = request.form['idPrestamo']
         idEquipo = request.form["idEquipo"]
         cedulaProfesor = request.form["cedulaProfesor"]
         salon = request.form["salon"]
         horario = request.form["horario"]
         fecha = request.form["fecha"]
-        #disponibilidad = request.form["disponibilidad"]
-        #estado = request.form['estado']
+        # disponibilidad = request.form["disponibilidad"]
+        # estado = request.form['estado']
         fechaS = time.strftime("%A %B, %d %Y %H:%M:%S")
         fechaSolicitud = str(fechaS)
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
@@ -426,27 +419,27 @@ def add_prestamo():
         uq.execute("SELECT * FROM equipos WHERE id=%s", (idEquipo,))
         eq = uq.fetchone()
 
-        if (not user is None) and (not eq is None):   
-            
+        if (not user is None) and (not eq is None):
+
             cur = mysql.connection.cursor()
             cur.execute(
-            "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s)",
-            (
-                idEquipo,
-                cedulaProfesor,
-                salon,
-                horario,
-                fecha,
-                #estado,
-                fechaSolicitud,
-             ),
-                    )
+                "INSERT INTO prestamos (idEquipo,cedulaProfesor,salon,horario,fecha,fechaSolicitud) VALUES (%s, %s, %s, %s, %s, %s)",
+                (
+                    idEquipo,
+                    cedulaProfesor,
+                    salon,
+                    horario,
+                    fecha,
+                    # estado,
+                    fechaSolicitud,
+                ),
+            )
             mysql.connection.commit()
             flash("Prestamo Agregado")
-        
+
             return redirect(url_for("prestamos"))
         else:
-            
+
             flash("Prestamo No Agregado verifique que la informacion sea valida")
 
             return redirect(url_for("prestamos"))
@@ -497,15 +490,7 @@ def update_prestamo(idPrestamo):
 
             WHERE idPrestamo = %s
           """,
-            (
-                idEquipo,
-                cedulaProfesor,
-                salon,
-                horario,
-                fecha,
-                estado,
-                idPrestamo,
-            ),
+            (idEquipo, cedulaProfesor, salon, horario, fecha, estado, idPrestamo),
         )
         cur.connection.commit()
         flash("Prestamo actualizado :d")
@@ -572,46 +557,44 @@ def add_peticion():
 
     if request.method == "POST":
 
-
-        #idPeticion = request.form["idPeticion"]
-        idPrestamo = request.form['idPrestamo']
+        # idPeticion = request.form["idPeticion"]
+        idPrestamo = request.form["idPrestamo"]
         cedulaProfesor = request.form["cedulaProfesor"]
         solicitud = request.form["solicitud"]
         comentario = request.form["comentario"]
-        estado="En proceso"
+        estado = "En proceso"
         fechaP = time.strftime("%A %B, %d %Y %H:%M:%S")
         fechaPeticion = str(fechaP)
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM personas WHERE cedula=%s", (cedulaProfesor,))
-        user=curl.fetchone()
+        user = curl.fetchone()
         uq = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         uq.execute("SELECT * FROM prestamos WHERE idPrestamo=%s", (idPrestamo,))
         eq = uq.fetchone()
 
-        if (not user is None) and (not eq is None):   
+        if (not user is None) and (not eq is None):
             cur = mysql.connection.cursor()
             cur.execute(
                 "INSERT INTO peticiones (idPrestamo,cedulaProfesor,solicitud,comentario,estado,fechaPeticion) VALUES (%s, %s, %s, %s, %s, %s)",
                 (
-                idPrestamo,
-                cedulaProfesor,
-                solicitud,
-                comentario,
-                estado,
-                fechaPeticion,
+                    idPrestamo,
+                    cedulaProfesor,
+                    solicitud,
+                    comentario,
+                    estado,
+                    fechaPeticion,
                 ),
             )
             mysql.connection.commit()
             flash("Petición enviada")
 
             return redirect(url_for("peticiones"))
-        else: 
+        else:
 
             flash("Prestamo No Agregado verifique que la informacion sea valida")
 
             return redirect(url_for("peticiones"))
 
-        
 
 @app.route("/deletePeticion/<string:idPeticion>")
 def delete_peticion(idPeticion):
@@ -622,9 +605,51 @@ def delete_peticion(idPeticion):
     cur.execute("DELETE FROM peticiones WHERE idPeticion= {0}".format(idPeticion))
     mysql.connection.commit()
     flash("Peticion eliminada :.v")
-    return redirect(url_for("listarPeticiones"))    
+    return redirect(url_for("listarPeticiones"))
 
-  
+
+# --------------------------------END Peticiones--------------------------------
+
+# --------------------------------START Calificacion--------------------------------
+
+
+@app.route("/calificaciones")
+def calificaciones():
+    """
+    Método que permite ingresar a la página de calificar el servicio
+    """
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM calificaciones")
+    data = cur.fetchall()
+    return render_template("registrarCalificacion.html", calificaciones=data)
+
+
+@app.route("/add_calificacion", methods=["POST"])
+def add_calificacion():
+    """
+    Método que permite calificar un servicio en la plataforma
+    """
+
+    if request.method == "POST":
+
+        # idCalificacion = request.form["idCalificacion"]
+        idPrestamo = request.form["idPrestamo"]
+        calificacion = request.form["calificacion"]
+
+        cur = mysql.connection.cursor()
+        cur.execute(
+            "INSERT INTO calificaciones (idPrestamo,calificacion) VALUES (%s, %s)",
+            (idPrestamo, calificacion),
+        )
+        mysql.connection.commit()
+        flash("Servicio calificado")
+
+        return redirect(url_for("calificaciones"))
+
+
+# --------------------------------END Calificacion--------------------------------
+
 if __name__ == "__main__":
     app.run(port=3000, debug=True)
 
