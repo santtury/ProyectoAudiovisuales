@@ -625,6 +625,18 @@ def calificaciones():
     return render_template("registrarCalificacion.html", calificaciones=data)
 
 
+@app.route("/listarCalificaciones")
+def listarCalificaciones():
+    """
+    Método que permite listar las calificaciones de los servicios
+    """
+
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM calificaciones")
+    data = cur.fetchall()
+    return render_template("listarCalificaciones.html", calificaciones=data)
+
+
 @app.route("/add_calificacion", methods=["POST"])
 def add_calificacion():
     """
