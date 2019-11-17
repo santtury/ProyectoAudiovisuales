@@ -1,0 +1,59 @@
+{% extends 'layoutAdmin.html' %}
+
+{% block title %} Inventario Equipos {% endblock %}
+
+{% block body %}
+
+{% with messages = get_flashed_messages() %}
+{%if messages %}
+{% for message in messages %}
+<div class="alert alert-warning alert-dismissible" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="alert-heading">Well done!</h4>
+    <p>{{message}}</p>
+</div>
+
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+<br>
+<form action="/BuscarInventario" method="POST">
+        <input type="text" name="busquedaEquipo" placeholder="Búsqueda">
+        <button type="submit">Buscar</button>
+</form>
+<br>
+
+<table class="table table-striped">
+        <thead>
+                <tr>
+                        <th scope="col">Id Equipo</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Facultad</th>
+                        <th scope="col">Estado Actual</th>
+                        <th scope="col">Disponibilidad</th>
+                </tr>
+        </thead>
+
+        <tbody>
+                {% for equipo in equipos  %}
+                <tr>
+                        <th scope="row">{{equipo.0}}</th>
+                        <td>{{equipo.1}}</td>
+                        <td>{{equipo.2}}</td>
+                        <td>{{equipo.3}}</td>
+                        <td>{{equipo.4}}</td>
+
+                        <td>
+                                <a href="/editarEquipo/{{equipo.0}}">Editar</a>
+                                <a href="/deleteEquipo/{{equipo.0}}">Eliminar</a>
+                        </td>
+
+                </tr>
+                {% endfor %}
+        </tbody>
+</table>
+
+{% endblock %}

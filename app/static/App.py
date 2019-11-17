@@ -210,7 +210,32 @@ def Buscar():
 
 # --------------------------------END Profesores--------------------------------
 # --------------------------------START Inventario--------------------------------
+@app.route("/Buscarinventario", methods=["POST"])
+def BuscarInventario():
+    """
+    Método que permite hacer el inventari de los equipos por parte del administrador
+    """
+    if request.method == "POST":
+        busquedaEquipo = request.form["busquedaEquipo"]
+        cur = mysql.connection.cursor()
+        cur.execute(
+            "SELECT * FROM equipos WHERE id = %(busca)s OR facultad = %(busca)s",
+            {"busca": busquedaEquipo},
+        )
+        data = cur.fetchall()
+        print(data)
+        return render_template("inventarioEquipo.html", equipos=data)
 
+
+@app.route("/buscarInventarios")
+def buscarInventarios():
+    """
+    Método que permite ingresar a la pagina para que el administrador puedan ver el inventario de equipos
+    """
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM equipos")
+    data = cur.fetchall()
+    return render_template("inventarioEquipo.html", equipos=data)
 # --------------------------------END Inventario--------------------------------
 
 # --------------------------------START Equipos--------------------------------
