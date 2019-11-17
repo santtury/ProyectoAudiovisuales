@@ -629,19 +629,31 @@ def add_calificacion():
 
     if request.method == "POST":
 
+        
         # idCalificacion = request.form["idCalificacion"]
         idPrestamo = request.form["idPrestamo"]
         calificacion = request.form["calificacion"]
 
-        cur = mysql.connection.cursor()
-        cur.execute(
-            "INSERT INTO calificaciones (idPrestamo,calificacion) VALUES (%s, %s)",
-            (idPrestamo, calificacion),
-        )
-        mysql.connection.commit()
-        flash("Servicio calificado")
+        uq = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        uq.execute("SELECT * FROM prestamos WHERE idPrestamo=%s", (idPrestamo,))
+        eq = uq.fetchone()
 
-        return redirect(url_for("calificaciones"))
+        if not eq is None:
+
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "INSERT INTO calificaciones (idPrestamo,calificacion) VALUES (%s, %s)",
+                (idPrestamo, calificacion),
+             )
+            mysql.connection.commit()
+            flash("Servicio calificado")
+
+            return redirect(url_for("calificaciones"))
+        else:
+            flash("Calificacion No Agregada verifique que la informacion sea valida")
+
+            return redirect(url_for("calificaciones"))
+
 
 
 # --------------------------------END Calificacion--------------------------------
@@ -686,16 +698,30 @@ def add_seguimientos():
         idPrestamo = request.form["idPrestamo"]
         cedulaProfesor = request.form["cedulaProfesor"]
         calificacion = request.form["calificacion"]
+        
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM personas WHERE cedula=%s", (cedulaProfesor,))
+        user = curl.fetchone()
+        uq = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        uq.execute("SELECT * FROM prestamos WHERE idPrestamo=%s", (idPrestamo,))
+        eq = uq.fetchone()
 
-        cur = mysql.connection.cursor()
-        cur.execute(
-            "INSERT INTO seguimientos (idPrestamo,cedulaProfesor,calificacion) VALUES (%s, %s, %s)",
-            (idPrestamo, cedulaProfesor, calificacion),
-        )
-        mysql.connection.commit()
-        flash("Profesor calificado")
+        if (not user is None) and (not eq is None):
 
-        return redirect(url_for("seguimientos"))
+            cur = mysql.connection.cursor()
+            cur.execute(
+                 "INSERT INTO seguimientos (idPrestamo,cedulaProfesor,calificacion) VALUES (%s, %s, %s)",
+                (idPrestamo, cedulaProfesor, calificacion),
+            )
+            mysql.connection.commit()
+            flash("Profesor calificado")
+
+            return redirect(url_for("seguimientos"))
+        else:
+            flash("Seguimiento No Agregado verifique que la informacion sea valida")
+
+            return redirect(url_for("peticiones"))
+
 
 
 # --------------------------------END Seguimiento--------------------------------
