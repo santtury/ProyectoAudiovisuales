@@ -210,7 +210,10 @@ def Buscar():
 
 # --------------------------------END Profesores--------------------------------
 # --------------------------------START Inventario--------------------------------
-@app.route("/Buscarinventario", methods=["POST"])
+
+
+
+@app.route("/BuscarInventario", methods=["POST"])
 def BuscarInventario():
     """
     Método que permite hacer el inventari de los equipos por parte del administrador
@@ -224,7 +227,7 @@ def BuscarInventario():
         )
         data = cur.fetchall()
         print(data)
-        return render_template("inventarioEquipo.html", equipos=data)
+        return render_template("inventarioEquipo.html", inventarios=data)
 
 
 @app.route("/buscarInventarios")
@@ -235,7 +238,7 @@ def buscarInventarios():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM equipos")
     data = cur.fetchall()
-    return render_template("inventarioEquipo.html", equipos=data)
+    return render_template("inventarioEquipo.html", inventarios=data)
 # --------------------------------END Inventario--------------------------------
 
 # --------------------------------START Equipos--------------------------------
@@ -697,7 +700,7 @@ def seguimientos():
     """
 
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM seguimientos")
+    cur.execute("SELECT * FROM seguimiento")
     data = cur.fetchall()
     return render_template("registrarSeguimiento.html", seguimientos=data)
 
@@ -709,7 +712,7 @@ def listarSeguimientos():
     """
 
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM seguimientos")
+    cur.execute("SELECT * FROM seguimiento")
     data = cur.fetchall()
     return render_template("listarSeguimientos.html", seguimientos=data)
 
