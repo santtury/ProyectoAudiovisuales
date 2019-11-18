@@ -209,6 +209,37 @@ def Buscar():
 
 
 # --------------------------------END Profesores--------------------------------
+# --------------------------------START Inventario--------------------------------
+
+
+
+@app.route("/BuscarInventario", methods=["POST"])
+def BuscarInventario():
+    """
+    Método que permite hacer el inventari de los equipos por parte del administrador
+    """
+    if request.method == "POST":
+        busquedaEquipo = request.form["busquedaEquipo"]
+        cur = mysql.connection.cursor()
+        cur.execute(
+            "SELECT * FROM equipos WHERE id = %(busca)s OR facultad = %(busca)s",
+            {"busca": busquedaEquipo},
+        )
+        data = cur.fetchall()
+        print(data)
+        return render_template("inventarioEquipo.html", inventarios=data)
+
+
+@app.route("/buscarInventarios")
+def buscarInventarios():
+    """
+    Método que permite ingresar a la pagina para que el administrador puedan ver el inventario de equipos
+    """
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM equipos")
+    data = cur.fetchall()
+    return render_template("inventarioEquipo.html", inventarios=data)
+# --------------------------------END Inventario--------------------------------
 
 # --------------------------------START Equipos--------------------------------
 
@@ -629,19 +660,31 @@ def add_calificacion():
 
     if request.method == "POST":
 
+        
         # idCalificacion = request.form["idCalificacion"]
         idPrestamo = request.form["idPrestamo"]
         calificacion = request.form["calificacion"]
 
-        cur = mysql.connection.cursor()
-        cur.execute(
-            "INSERT INTO calificaciones (idPrestamo,calificacion) VALUES (%s, %s)",
-            (idPrestamo, calificacion),
-        )
-        mysql.connection.commit()
-        flash("Servicio calificado")
+        uq = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        uq.execute("SELECT * FROM prestamos WHERE idPrestamo=%s", (idPrestamo,))
+        eq = uq.fetchone()
 
-        return redirect(url_for("calificaciones"))
+        if not eq is None:
+
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "INSERT INTO calificaciones (idPrestamo,calificacion) VALUES (%s, %s)",
+                (idPrestamo, calificacion),
+             )
+            mysql.connection.commit()
+            flash("Servicio calificado")
+
+            return redirect(url_for("calificaciones"))
+        else:
+            flash("Calificacion No Agregada verifique que la informacion sea valida")
+
+            return redirect(url_for("calificaciones"))
+
 
 
 # --------------------------------END Calificacion--------------------------------
@@ -657,7 +700,7 @@ def seguimientos():
     """
 
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM seguimientos")
+    cur.execute("SELECT * FROM seguimiento")
     data = cur.fetchall()
     return render_template("registrarSeguimiento.html", seguimientos=data)
 
@@ -669,7 +712,7 @@ def listarSeguimientos():
     """
 
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM seguimientos")
+    cur.execute("SELECT * FROM seguimiento")
     data = cur.fetchall()
     return render_template("listarSeguimientos.html", seguimientos=data)
 
@@ -686,16 +729,30 @@ def add_seguimientos():
         idPrestamo = request.form["idPrestamo"]
         cedulaProfesor = request.form["cedulaProfesor"]
         calificacion = request.form["calificacion"]
+        
+        curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        curl.execute("SELECT * FROM personas WHERE cedula=%s", (cedulaProfesor,))
+        user = curl.fetchone()
+        uq = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        uq.execute("SELECT * FROM prestamos WHERE idPrestamo=%s", (idPrestamo,))
+        eq = uq.fetchone()
 
-        cur = mysql.connection.cursor()
-        cur.execute(
-            "INSERT INTO seguimientos (idPrestamo,cedulaProfesor,calificacion) VALUES (%s, %s, %s)",
-            (idPrestamo, cedulaProfesor, calificacion),
-        )
-        mysql.connection.commit()
-        flash("Profesor calificado")
+        if (not user is None) and (not eq is None):
 
-        return redirect(url_for("seguimientos"))
+            cur = mysql.connection.cursor()
+            cur.execute(
+                 "INSERT INTO seguimientos (idPrestamo,cedulaProfesor,calificacion) VALUES (%s, %s, %s)",
+                (idPrestamo, cedulaProfesor, calificacion),
+            )
+            mysql.connection.commit()
+            flash("Profesor calificado")
+
+            return redirect(url_for("seguimientos"))
+        else:
+            flash("Seguimiento No Agregado verifique que la informacion sea valida")
+
+            return redirect(url_for("peticiones"))
+
 
 
 # --------------------------------END Seguimiento--------------------------------
