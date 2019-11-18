@@ -660,7 +660,7 @@ def update_peticion(idPeticion):
         )
         cur.connection.commit()
         flash("Petición actualizada")
-        return redirect(url_for("peticiones"))
+        return redirect(url_for("listarPeticiones"))
 
 
 # --------------------------------END Peticiones--------------------------------
