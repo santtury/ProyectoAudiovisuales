@@ -11,7 +11,7 @@
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
-    <h4 class="alert-heading">Lo hiciste :')!</h4>
+    <h4 class="alert-heading">Bien Hecho :')</h4>
     <p>{{message}}</p>
 </div>
 
@@ -36,7 +36,7 @@
                 <div class="form-group">
 
 
-                    <label>Id Prestamo: </label>
+                    <label>Id Prestamo</label>
 
 
                     <input type="text" class="form-control" name="idPrestamo">
@@ -47,7 +47,7 @@
                 <div class="form-group">
 
 
-                    <label>Cédula: </label>
+                    <label>Cédula</label>
 
 
                     <input type="text" class="form-control" name="cedulaProfesor">
@@ -58,7 +58,7 @@
                 <div class="form-group">
 
 
-                    <label>Solicitud: </label>
+                    <label>Solicitud</label>
 
 
                     <input type="text" class="form-control" name="solicitud">
@@ -69,7 +69,7 @@
                 <div class="form-group">
 
 
-                    <label>Comentario: </label>
+                    <label>Comentario</label>
 
 
                     <input type="text" class="form-control" name="comentario">
@@ -106,7 +106,7 @@
             <th scope="col">Solicitud</th>
             <th scope="col">Comentario</th>
             <th scope="col">Estado</th>
-            <th scope="col">Fecha petición</th>
+            <th scope="col">Fecha/Hora petición</th>
         </tr>
     </thead>
     <tbody>
@@ -120,11 +120,6 @@
             <td>{{peticion.4}}</td>
             <td>{{peticion.5}}</td>
             <td>{{peticion.6}}</td>
-
-            <td>
-                <a href="/editarPeticion/{{peticion.0}}">Editar</a>
-                <a href="/deletePeticion/{{peticion.0}}">Eliminar</a>
-            </td>
         </tr>
         {% endfor %}
     </tbody>

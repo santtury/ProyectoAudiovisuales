@@ -212,7 +212,6 @@ def Buscar():
 # --------------------------------START Inventario--------------------------------
 
 
-
 @app.route("/BuscarInventario", methods=["POST"])
 def BuscarInventario():
     """
@@ -239,6 +238,8 @@ def buscarInventarios():
     cur.execute("SELECT * FROM equipos")
     data = cur.fetchall()
     return render_template("inventarioEquipo.html", inventarios=data)
+
+
 # --------------------------------END Inventario--------------------------------
 
 # --------------------------------START Equipos--------------------------------
@@ -606,7 +607,7 @@ def add_peticion():
             return redirect(url_for("peticiones"))
         else:
 
-            flash("Prestamo No Agregado verifique que la informacion sea valida")
+            flash("Peticion No Agregado verifique que la informacion sea valida")
 
             return redirect(url_for("peticiones"))
 
@@ -619,8 +620,47 @@ def delete_peticion(idPeticion):
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM peticiones WHERE idPeticion= {0}".format(idPeticion))
     mysql.connection.commit()
-    flash("Peticion eliminada :.v")
+    flash("Peticion eliminada")
     return redirect(url_for("listarPeticiones"))
+
+
+@app.route("/editarPeticion/<idPeticion>")
+def editar_peticion(idPeticion):
+    """
+    Método que permite ingresar a la página de editar peticiones
+    """
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM peticiones WHERE idPeticion=%(idp)s", {"idp": idPeticion})
+    data = cur.fetchall()
+    return render_template("editarPeticion.html", peticion=data[0])
+
+
+@app.route("/updatePeticion/<string:idPeticion>", methods=["POST"])
+def update_peticion(idPeticion):
+    if request.method == "POST":
+        idPrestamo = request.form["idPrestamo"]
+        cedulaProfesor = request.form["cedulaProfesor"]
+        solicitud = request.form["solicitud"]
+        comentario = request.form["comentario"]
+        estado = request.form["estado"]
+        cur = mysql.connection.cursor()
+        cur.execute(
+            """
+            UPDATE peticiones
+            SET idPrestamo = %s,
+                cedulaProfesor = %s,
+                solicitud = %s,
+                
+                comentario = %s,
+                estado = %s
+
+            WHERE idPeticion = %s
+          """,
+            (idPrestamo, cedulaProfesor, solicitud, comentario, estado, idPeticion),
+        )
+        cur.connection.commit()
+        flash("Petición actualizada")
+        return redirect(url_for("listarPeticiones"))
 
 
 # --------------------------------END Peticiones--------------------------------
@@ -660,7 +700,6 @@ def add_calificacion():
 
     if request.method == "POST":
 
-        
         # idCalificacion = request.form["idCalificacion"]
         idPrestamo = request.form["idPrestamo"]
         calificacion = request.form["calificacion"]
@@ -675,7 +714,7 @@ def add_calificacion():
             cur.execute(
                 "INSERT INTO calificaciones (idPrestamo,calificacion) VALUES (%s, %s)",
                 (idPrestamo, calificacion),
-             )
+            )
             mysql.connection.commit()
             flash("Servicio calificado")
 
@@ -684,7 +723,6 @@ def add_calificacion():
             flash("Calificacion No Agregada verifique que la informacion sea valida")
 
             return redirect(url_for("calificaciones"))
-
 
 
 # --------------------------------END Calificacion--------------------------------
@@ -729,7 +767,7 @@ def add_seguimientos():
         idPrestamo = request.form["idPrestamo"]
         cedulaProfesor = request.form["cedulaProfesor"]
         calificacion = request.form["calificacion"]
-        
+
         curl = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         curl.execute("SELECT * FROM personas WHERE cedula=%s", (cedulaProfesor,))
         user = curl.fetchone()
@@ -741,7 +779,7 @@ def add_seguimientos():
 
             cur = mysql.connection.cursor()
             cur.execute(
-                 "INSERT INTO seguimientos (idPrestamo,cedulaProfesor,calificacion) VALUES (%s, %s, %s)",
+                "INSERT INTO seguimientos (idPrestamo,cedulaProfesor,calificacion) VALUES (%s, %s, %s)",
                 (idPrestamo, cedulaProfesor, calificacion),
             )
             mysql.connection.commit()
@@ -752,7 +790,6 @@ def add_seguimientos():
             flash("Seguimiento No Agregado verifique que la informacion sea valida")
 
             return redirect(url_for("peticiones"))
-
 
 
 # --------------------------------END Seguimiento--------------------------------

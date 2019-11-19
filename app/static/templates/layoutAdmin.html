@@ -28,7 +28,7 @@
                     <a class="nav-link" href="/">Salir<span class="sr-only">(current)</span></a>
                 </li>
                 </li>
-                
+
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -38,7 +38,7 @@
                         <a class="dropdown-item" href="/inicio">Registrar Personal</a>
                         <a class="dropdown-item" href="/Busqueda">Buscar Personal</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/seguimientos">Seguimiento</a>
+                        <a class="dropdown-item" href="/seguimientos">Calificar personal</a>
                     </div>
                 </li>
 
@@ -49,7 +49,7 @@
                         Préstamos
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/buscarPrestamos">Búsqueda préstamos</a>
+                        <a class="dropdown-item" href="/buscarPrestamos">Buscar préstamo</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/listarPrestamos">Listado solicitudes</a>
                         <div class="dropdown-divider"></div>
@@ -66,7 +66,7 @@
                         Equipos
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/inicioEquipos">Registrar Equipo</a>
+                        <a class="dropdown-item" href="/inicioEquipos">Registrar equipo</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/buscarInventarios">Inventario de equipos</a>
                     </div>
@@ -105,8 +105,25 @@
     <div class="container">
         {% block body %}
         <div align="center">
-            <h4>LOS CO-MASTERS DSF</h4>
-            <h6>Danny Macias - Sebastian Anttury - Fabio Hurtado</h6>
+            <br>
+            <h1>Bienvenido Administrador</h4>
+                <img src="{{ url_for('static', filename='images/logo.png') }}" />
+                <img src="/app/static/images/logo.png" />
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <br>
+                <h6>Danny Macias - Sebastian Anttury - Fabio Hurtado</h6>
+                <h6>Los CoMasters</h6>
         </div>
         {% endblock%}
     </div>
