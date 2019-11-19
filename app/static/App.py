@@ -745,7 +745,7 @@ def seguimientos():
 @app.route("/listarSeguimientos")
 def listarSeguimientos():
     """
-    Método que permite listar las calificaciones de los servicios
+    Método que permite listar las calificaciones de los servicioss
     """
 
     cur = mysql.connection.cursor()
