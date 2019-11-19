@@ -24,11 +24,6 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Salir<span class="sr-only">(current)</span></a>
-                </li>
-                </li>
-
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -38,7 +33,8 @@
                         <a class="dropdown-item" href="/inicio">Registrar Personal</a>
                         <a class="dropdown-item" href="/Busqueda">Buscar Personal</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/seguimientos">Calificar personal</a>
+                        <a class="dropdown-item" href="/seguimientos">Calificar profesor</a>
+                        <a class="dropdown-item" href="/listarSeguimientos">Listado seguimientos</a>
                     </div>
                 </li>
 
@@ -49,15 +45,10 @@
                         Préstamos
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/buscarPrestamos">Buscar préstamo</a>
-                        <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/listarPrestamos">Listado solicitudes</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="/listarPeticiones">Listado peticiones</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/listarCalificaciones">Listado calificaciones</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/listarSeguimientos">Listado seguimientos</a>
+                        
                     </div>
                 </li>
                 <li class="nav-item dropdown">
@@ -79,6 +70,9 @@
                 <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                 <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
             </form> -->
+            <li class="nav-item" align="right">
+                <a class="nav-link" href="/">Salir<span class="sr-only">(current)</span></a>
+            </li>
         </div>
     </nav>
 </head>

@@ -1,0 +1,43 @@
+{% extends 'layoutProfesor.html' %}
+
+{% block title %} BuscarPrestamo {% endblock %}
+
+
+{% block body %}
+
+<br>
+<form action="/BuscarPeticion" method="POST">
+    <input type="text" name="busquedaPeticion" placeholder="Búsqueda">
+    <button type="submit">Buscar</button>
+</form>
+<br>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">Id Petición</th>
+            <th scope="col">Id Préstamo</th>
+            <th scope="col">Cédula</th>
+            <th scope="col">Solicitud</th>
+            <th scope="col">Comentario</th>
+            <th scope="col">Estado</th>
+            <th scope="col">Fecha/Hora petición</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for peticion in peticiones  %}
+        <tr>
+            <th scope="row">{{peticion.0}}</th>
+            <td>{{peticion.1}}</td>
+            <td>{{peticion.2}}</td>
+            <td>{{peticion.3}}</td>
+            <td>{{peticion.4}}</td>
+            <td>{{peticion.5}}</td>
+            <td>{{peticion.6}}</td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

@@ -1,4 +1,4 @@
-{% extends 'layoutAdmin.html' %}
+{% extends 'layoutProfesor.html' %}
 
 {% block title %} BuscarPrestamo {% endblock %}
 
@@ -10,18 +10,18 @@
     <input type="text" name="busquedaPrestamo" placeholder="Búsqueda">
     <button type="submit">Buscar</button>
 </form>
-
+<br>
 <table class="table table-striped">
     <thead>
         <tr>
             <th scope="col">Id Préstamo</th>
             <th scope="col">Id Equipo</th>
-            <th scope="col">Cédula Profesor</th>
+            <th scope="col">Cédula</th>
             <th scope="col">Salón</th>
             <th scope="col">Horario</th>
             <th scope="col">Fecha</th>
             <th scope="col">Estado</th>
-            <th scope="col">Fecha solicitud</th>
+            <th scope="col">Fecha/Hora solicitud</th>
 
         </tr>
     </thead>
@@ -37,11 +37,6 @@
             <td>{{prestamo.5}}</td>
             <td>{{prestamo.6}}</td>
             <td>{{prestamo.7}}</td>
-
-            <td>
-                <a href="/editarPrestamo/{{prestamo.0}}">Editar</a>
-                <a href="/deletePrestamo/{{prestamo.0}}">Eliminar</a>
-        </td>
 
         </tr>
         {% endfor %}

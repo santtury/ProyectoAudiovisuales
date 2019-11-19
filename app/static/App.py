@@ -192,7 +192,7 @@ def Busqueda():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM personas")
     data = cur.fetchall()
-    return render_template("buscarpersona.html", persona=data)
+    return render_template("buscarpersona.html", personas=data)
 
 
 @app.route("/Buscar", methods=["POST"])
@@ -201,7 +201,8 @@ def Buscar():
         busqueda = request.form["busqueda"]
         cur = mysql.connection.cursor()
         cur.execute(
-            "SELECT * FROM personas WHERE cedula = %(cedula)s", {"cedula": busqueda}
+            "SELECT * FROM personas WHERE cedula = %(busca)s OR rol=%(busca)s",
+            {"busca": busqueda},
         )
         data = cur.fetchall()
         print(data)
@@ -527,7 +528,7 @@ def BuscarPrestamo():
         busquedaPrestamo = request.form["busquedaPrestamo"]
         cur = mysql.connection.cursor()
         cur.execute(
-            "SELECT * FROM prestamos WHERE idPrestamo = %(idPrestamo)s",
+            "SELECT * FROM prestamos WHERE idPrestamo = %(idPrestamo)s OR cedulaProfesor = %(idPrestamo)s",
             {"idPrestamo": busquedaPrestamo},
         )
         data = cur.fetchall()
@@ -630,7 +631,9 @@ def editar_peticion(idPeticion):
     Método que permite ingresar a la página de editar peticiones
     """
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM peticiones WHERE idPeticion=%(idp)s", {"idp": idPeticion})
+    cur.execute(
+        "SELECT * FROM peticiones WHERE idPeticion=%(idp)s", {"idp": idPeticion}
+    )
     data = cur.fetchall()
     return render_template("editarPeticion.html", peticion=data[0])
 
@@ -663,6 +666,28 @@ def update_peticion(idPeticion):
         return redirect(url_for("listarPeticiones"))
 
 
+@app.route("/buscarPeticiones")
+def buscarPeticiones():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM peticiones")
+    data = cur.fetchall()
+    return render_template("buscarPeticion.html", peticion=data)
+
+
+@app.route("/BuscarPeticion", methods=["POST"])
+def BuscarPeticion():
+    if request.method == "POST":
+        busquedaPeticion = request.form["busquedaPeticion"]
+        cur = mysql.connection.cursor()
+        cur.execute(
+            "SELECT * FROM peticiones WHERE idPeticion = %(idPeticion)s OR cedulaProfesor = %(idPeticion)s",
+            {"idPeticion": busquedaPeticion},
+        )
+        data = cur.fetchall()
+        print(data)
+        return render_template("buscarPeticion.html", peticiones=data)
+
+        
 # --------------------------------END Peticiones--------------------------------
 
 # --------------------------------START Calificacion--------------------------------
@@ -738,7 +763,7 @@ def seguimientos():
     """
 
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM seguimiento")
+    cur.execute("SELECT * FROM seguimientos")
     data = cur.fetchall()
     return render_template("registrarSeguimiento.html", seguimientos=data)
 
@@ -750,7 +775,7 @@ def listarSeguimientos():
     """
 
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM seguimiento")
+    cur.execute("SELECT * FROM seguimientos")
     data = cur.fetchall()
     return render_template("listarSeguimientos.html", seguimientos=data)
 
@@ -785,11 +810,11 @@ def add_seguimientos():
             mysql.connection.commit()
             flash("Profesor calificado")
 
-            return redirect(url_for("seguimientos"))
+            return redirect(url_for("listarSeguimientos"))
         else:
-            flash("Seguimiento No Agregado verifique que la informacion sea valida")
+            flash("Seguimiento NO agregado, verifique que la información sea válida")
 
-            return redirect(url_for("peticiones"))
+            return redirect(url_for("seguimientos"))
 
 
 # --------------------------------END Seguimiento--------------------------------
