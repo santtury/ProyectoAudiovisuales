@@ -18,8 +18,7 @@ mysql = MySQL(app)
 
 app.secret_key = "mysecretkey"
 
-#  if para comparar la fecha      if   fecha>=(data+3):
-
+#Comaster's
 
 @app.route("/")
 def index():
@@ -771,7 +770,7 @@ def seguimientos():
 @app.route("/listarSeguimientos")
 def listarSeguimientos():
     """
-    Método que permite listar las calificaciones de los servicios
+    Método que permite listar las calificaciones de los servicioss
     """
 
     cur = mysql.connection.cursor()
