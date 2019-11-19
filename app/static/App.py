@@ -18,8 +18,7 @@ mysql = MySQL(app)
 
 app.secret_key = "mysecretkey"
 
-#  if para comparar la fecha      if   fecha>=(data+3):
-
+#Comaster's
 
 @app.route("/")
 def index():
